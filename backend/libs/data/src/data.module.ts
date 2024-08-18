@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
-import { DataService } from './data.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Player } from './entities/player.entity';
+import { Buyin } from './entities/buyin.entity';
+import { PlaySession } from './entities/playSession.entity';
+import { PlayingGroup } from './entities/playingGroup.entity';
 
 @Module({
-  providers: [DataService],
-  exports: [DataService],
+  imports: [
+    TypeOrmModule.forFeature([Player, Buyin, PlaySession, PlayingGroup]),
+  ],
+  exports: [TypeOrmModule],
 })
 export class DataModule {}

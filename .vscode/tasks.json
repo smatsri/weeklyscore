@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Generate Migration",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "typeorm",
+        "migration:generate",
+        "${input:migrationName}"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "type": "promptString",
+      "description": "Enter the migration name"
+    }
+  ]
+}
