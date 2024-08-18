@@ -27,6 +27,18 @@
       ],
       "@app/authentication/*": [
         "libs/authentication/src/*"
+      ],
+      "@app/domain": [
+        "libs/domain/src"
+      ],
+      "@app/domain/*": [
+        "libs/domain/src/*"
+      ],
+      "@app/data": [
+        "libs/data/src"
+      ],
+      "@app/data/*": [
+        "libs/data/src/*"
       ]
     }
   }

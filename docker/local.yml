@@ -1,0 +1,19 @@
+networks:
+  default:
+    name: local-pg-network
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: weeklyscore
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: myuser@example.com
+      PGADMIN_DEFAULT_PASSWORD: mypass
+    ports:
+      - 5050:80

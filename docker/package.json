@@ -1,0 +1,12 @@
+{
+  "name": "docker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "scripts": {
+    "run-local": "node index.js"
+  },
+  "license": "ISC",
+  "description": ""
+}

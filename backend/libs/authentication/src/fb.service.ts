@@ -6,11 +6,15 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FirebaseAuthService implements OnModuleInit {
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
   onModuleInit() {
-    const relativePath = this.configService.get<string>('GOOGLE_APPLICATION_CREDENTIALS')
+    const relativePath = this.configService.get<string>(
+      'GOOGLE_APPLICATION_CREDENTIALS',
+    );
     const serviceAccountPath = path.resolve(__dirname, relativePath);
-    const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'));
+    const serviceAccount = JSON.parse(
+      fs.readFileSync(serviceAccountPath, 'utf-8'),
+    );
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),

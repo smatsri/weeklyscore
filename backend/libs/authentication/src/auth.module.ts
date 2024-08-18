@@ -6,4 +6,4 @@ import { FirebaseAuthGuard } from './fb.guard';
   providers: [FirebaseAuthService, FirebaseAuthGuard],
   exports: [FirebaseAuthService, FirebaseAuthGuard],
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {}

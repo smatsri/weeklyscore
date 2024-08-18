@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Generate Migration",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "migration:generate",
+        "--",
+        "${workspaceFolder}/backend/libs/data/src/migrations/${input:migrationName}"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "type": "promptString",
+      "description": "Enter the migration name"
+    }
+  ]
+}
