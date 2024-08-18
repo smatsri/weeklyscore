@@ -1,7 +1,7 @@
 import * as entities from '@app/domain/entities/types';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { Player } from './Player';
-import { PlaySession } from './PlaySession';
+import { Player } from './Player.entity';
+import { PlaySession } from './PlaySession.entity';
 
 @Entity()
 export class Buyin implements entities.Buyin {

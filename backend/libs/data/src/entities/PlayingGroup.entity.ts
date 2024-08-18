@@ -1,6 +1,6 @@
 import * as entities from '@app/domain/entities/types';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { PlaySession } from './PlaySession';
+import { PlaySession } from './PlaySession.entity';
 
 @Entity()
 export class PlayingGroup implements entities.PlayingGroup {
