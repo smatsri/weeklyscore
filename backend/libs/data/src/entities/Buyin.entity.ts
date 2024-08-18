@@ -1,5 +1,12 @@
 import * as entities from '@app/domain/entities/types';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { Player } from './Player.entity';
 import { PlaySession } from './PlaySession.entity';
 
@@ -11,10 +18,10 @@ export class Buyin implements entities.Buyin {
   @Column('decimal')
   amount: number;
 
-  @ManyToOne(() => Player, player => player.buyins)
+  @ManyToOne(() => Player, (player) => player.buyins)
   player: Player;
 
-  @ManyToOne(() => PlaySession, playSession => playSession.buyins)
+  @ManyToOne(() => PlaySession, (playSession) => playSession.buyins)
   playSession: PlaySession;
 
   @CreateDateColumn()
