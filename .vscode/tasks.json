@@ -9,7 +9,7 @@
         "run",
         "migration:generate",
         "--",
-        "${workspaceFolder}/libs/data/src/migrations/${input:migrationName}"
+        "${workspaceFolder}/backend/libs/data/src/migrations/${input:migrationName}"
       ],
       "problemMatcher": [],
       "group": {
