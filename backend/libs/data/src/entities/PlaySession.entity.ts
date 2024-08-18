@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
+  Index,
 } from 'typeorm';
 import { Buyin } from './Buyin.entity';
 import { PlayingGroup } from './PlayingGroup.entity';
@@ -19,6 +20,7 @@ export class PlaySession implements entities.PlaySession {
   buyins: Buyin[];
 
   @ManyToOne(() => PlayingGroup, (playingGroup) => playingGroup.playSessions)
+  @Index('idx_play_session_playing_group_id')
   playingGroup: PlayingGroup;
 
   @CreateDateColumn()
