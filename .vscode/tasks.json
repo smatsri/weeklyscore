@@ -6,14 +6,18 @@
       "type": "shell",
       "command": "npm",
       "args": [
-        "typeorm",
+        "run",
         "migration:generate",
-        "${input:migrationName}"
+        "--",
+        "${workspaceFolder}/libs/data/src/migrations/${input:migrationName}"
       ],
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
       }
     }
   ],
