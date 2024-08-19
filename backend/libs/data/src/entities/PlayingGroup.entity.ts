@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { PlaySession } from './PlaySession.entity';
+import { PlaySession } from './playSession.entity';
 
 @Entity()
 export class PlayingGroup implements entities.PlayingGroup {

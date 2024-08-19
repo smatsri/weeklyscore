@@ -8,8 +8,8 @@ import {
   ManyToOne,
   Index,
 } from 'typeorm';
-import { Player } from './Player.entity';
-import { PlaySession } from './PlaySession.entity';
+import { Player } from './player.entity';
+import { PlaySession } from './playSession.entity';
 
 @Entity()
 export class Buyin implements entities.Buyin {

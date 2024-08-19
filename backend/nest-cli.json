@@ -33,6 +33,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/data/tsconfig.lib.json"
       }
+    },
+    "postgraphile": {
+      "type": "library",
+      "root": "libs/postgraphile",
+      "entryFile": "index",
+      "sourceRoot": "libs/postgraphile/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/postgraphile/tsconfig.lib.json"
+      }
     }
   }
 }
