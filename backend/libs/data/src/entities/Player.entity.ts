@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Buyin } from './Buyin.entity';
+import { Buyin } from './buyin.entity';
 
 @Entity()
 export class Player implements entities.Player {

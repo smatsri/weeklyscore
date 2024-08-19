@@ -5,7 +5,8 @@ import { AuthenticationModule } from '@app/authentication';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DataModule } from '@app/data';
-
+import { PostgraphileModule } from '@app/postgraphile';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,10 +21,13 @@ import { DataModule } from '@app/data';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       migrations: ['src/migrations/*.ts'],
-      autoLoadEntities: true,
+      entities: [join(__dirname, 'libs/data/src/entities/*.entity{.ts,.js}')],
+
+      autoLoadEntities: false,
       synchronize: false,
     }),
     DataModule,
+    PostgraphileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

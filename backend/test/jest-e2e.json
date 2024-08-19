@@ -16,6 +16,8 @@
     "@app/domain/(.*)": "<rootDir>/../libs/domain/src/$1",
     "@app/domain": "<rootDir>/../libs/domain/src",
     "@app/data/(.*)": "<rootDir>/../libs/data/src/$1",
-    "@app/data": "<rootDir>/../libs/data/src"
+    "@app/data": "<rootDir>/../libs/data/src",
+    "@app/postgraphile/(.*)": "<rootDir>/../libs/postgraphile/src/$1",
+    "@app/postgraphile": "<rootDir>/../libs/postgraphile/src"
   }
 }
