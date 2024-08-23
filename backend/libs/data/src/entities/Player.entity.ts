@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Buyin } from './buyin.entity';
 
-@Entity()
+@Entity({ schema: 'weeklyscore' })
 export class Player implements entities.Player {
   @PrimaryGeneratedColumn('uuid')
   id: string;

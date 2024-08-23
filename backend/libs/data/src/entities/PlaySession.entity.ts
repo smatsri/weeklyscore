@@ -11,7 +11,7 @@ import {
 import { Buyin } from './buyin.entity';
 import { PlayingGroup } from './playingGroup.entity';
 
-@Entity()
+@Entity({ schema: 'weeklyscore' })
 export class PlaySession implements entities.PlaySession {
   @PrimaryGeneratedColumn('uuid')
   id: string;

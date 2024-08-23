@@ -5,6 +5,7 @@ import { AuthenticationModule } from '@app/authentication';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DataModule } from '@app/data';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
 import { join } from 'path';
 @Module({
@@ -22,7 +23,7 @@ import { join } from 'path';
       database: process.env.DB_DATABASE,
       migrations: ['src/migrations/*.ts'],
       entities: [join(__dirname, 'libs/data/src/entities/*.entity{.ts,.js}')],
-
+      namingStrategy: new SnakeNamingStrategy(),
       autoLoadEntities: false,
       synchronize: false,
     }),
