@@ -1,7 +1,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -9,15 +8,28 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-export default function PlayersCard() {
+type Props = {
+  players: { name: string; score: number }[];
+};
+
+export default function PlayersCard({ players = [] }: Props) {
   return (
-    <Card>
+    <Card className="min-w-[300px]">
       <CardHeader>
-        <CardTitle>Players</CardTitle>
+        <CardTitle>שחקנים מובילים</CardTitle>
       </CardHeader>
-      <CardContent>list of players</CardContent>
-      <CardFooter>
-        <Button>view all</Button>
+      <CardContent>
+        <ul className="grid gap-3">
+          {players.map((player) => (
+            <li key={player.name} className="flex items-center justify-between">
+              <span>{player.name}</span>
+              <span>₪{player.score}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+      <CardFooter className="flex justify-center">
+        <Button>הצג הכל</Button>
       </CardFooter>
     </Card>
   );
