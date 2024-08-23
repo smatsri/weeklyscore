@@ -14,7 +14,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    primary: true,
-    label: "Button",
+    players: [
+      { name: "שי", score: 250 },
+      { name: "אבי", score: 200 },
+      { name: "אלי", score: 150 },
+    ],
   },
 };

@@ -8,7 +8,11 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-export default function PlayersCard() {
+type Props = {
+  players: { name: string; score: number }[];
+};
+
+export default function PlayersCard({ players = [] }: Props) {
   return (
     <Card className="min-w-[300px]">
       <CardHeader>
@@ -16,18 +20,12 @@ export default function PlayersCard() {
       </CardHeader>
       <CardContent>
         <ul className="grid gap-3">
-          <li className="flex items-center justify-between">
-            <span>שי</span>
-            <span>₪250.00</span>
-          </li>
-          <li className="flex items-center justify-between">
-            <span>אבי</span>
-            <span>₪200.00</span>
-          </li>
-          <li className="flex items-center justify-between">
-            <span>אלי</span>
-            <span>₪150.00</span>
-          </li>
+          {players.map((player) => (
+            <li key={player.name} className="flex items-center justify-between">
+              <span>{player.name}</span>
+              <span>₪{player.score}</span>
+            </li>
+          ))}
         </ul>
       </CardContent>
       <CardFooter className="flex justify-center">
