@@ -27,9 +27,6 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <nav>
-          <h1>Weeklyscore</h1>
-        </nav>
         <FirebaseProvider>{children}</FirebaseProvider>
       </body>
     </html>
