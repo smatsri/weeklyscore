@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { PlaySession } from './playSession.entity';
 
-@Entity()
+@Entity({ schema: 'weeklyscore' })
 export class PlayingGroup implements entities.PlayingGroup {
   @PrimaryGeneratedColumn('uuid')
   id: string;
