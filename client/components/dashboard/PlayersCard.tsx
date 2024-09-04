@@ -25,7 +25,7 @@ export default function PlayersCard({ players = [], show = 3 }: Props) {
   return (
     <Card className="min-w-[300px]">
       <CardHeader>
-        <CardTitle>שחקנים מובילים</CardTitle>
+        <h2 className="border-hidden">שחקנים מובילים</h2>
       </CardHeader>
       <CardContent>
         <ul className="grid gap-3">

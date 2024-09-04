@@ -16,7 +16,7 @@ export default function LatestSessionsCard({ sessions = [] }: Props) {
   return (
     <Card className="min-w-[300px]">
       <CardHeader>
-        <CardTitle>שסנים אחרונים</CardTitle>
+        <h2 className="border-hidden">שסנים אחרונים</h2>
       </CardHeader>
       <CardContent>
         <ul className="grid gap-3">
