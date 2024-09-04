@@ -19,7 +19,7 @@ export default function PlayersCard({ players = [], show = 3 }: Props) {
   const [open, setOpen] = useState(false);
   const playersToShow = useMemo(
     () => (!open ? players.slice(0, show) : players),
-    [players, open]
+    [players, open, show]
   );
 
   return (
