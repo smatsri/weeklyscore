@@ -12,12 +12,13 @@ import { useMemo, useState } from "react";
 
 type Props = {
   players: { name: string; score: number }[];
+  show?: number;
 };
 
-export default function PlayersCard({ players = [] }: Props) {
+export default function PlayersCard({ players = [], show = 3 }: Props) {
   const [open, setOpen] = useState(false);
   const playersToShow = useMemo(
-    () => (!open ? players.slice(0, 3) : players),
+    () => (!open ? players.slice(0, show) : players),
     [players, open]
   );
 
@@ -31,7 +32,9 @@ export default function PlayersCard({ players = [] }: Props) {
           {playersToShow.map((player) => (
             <li key={player.name} className="flex items-center justify-between">
               <span>{player.name}</span>
-              <span>₪{player.score}</span>
+              <span style={{ direction: "ltr" }}>
+                {player.score > 0 ? `₪${player.score}` : `-₪${-player.score}`}
+              </span>
             </li>
           ))}
         </ul>

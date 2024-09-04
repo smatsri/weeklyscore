@@ -8,7 +8,7 @@ import moment from "moment";
 const Dashboard = async () => {
   const res = await client.query<DashboardData>({
     query: DASHBOARD_DATA_QUERY,
-    variables: { numSessions: 10 },
+    variables: { numSessions: 4 },
   });
 
   const players = res.data.getPlayerScores.nodes.map(
@@ -28,7 +28,7 @@ const Dashboard = async () => {
       <div className="space-y-6">
         <h1 className="text-4xl font-bold">דאשבורד</h1>
         <div className="w-full max-w-md">
-          <PlayersCard players={players} />
+          <PlayersCard players={players} show={4} />
         </div>
         <div className="w-full max-w-md">
           <LatestSessionsCard sessions={sessions} />
