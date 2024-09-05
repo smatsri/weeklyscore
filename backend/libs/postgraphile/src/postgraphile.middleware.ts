@@ -1,12 +1,11 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { postgraphile } from 'postgraphile';
-const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter");
+const ConnectionFilterPlugin = require('postgraphile-plugin-connection-filter');
 
 @Injectable()
 export class PostGraphileMiddleware implements NestMiddleware {
-  constructor(private configService: ConfigService) { }
-
+  constructor(private configService: ConfigService) {}
 
   use(req: any, res: any, next: () => void) {
     const dbHost = this.configService.get<string>('DB_HOST');
@@ -23,6 +22,7 @@ export class PostGraphileMiddleware implements NestMiddleware {
       enhanceGraphiql: true,
       enableCors: true, // If CORS is needed
       appendPlugins: [ConnectionFilterPlugin],
+      dynamicJson: true,
     })(req, res, next);
   }
 }
