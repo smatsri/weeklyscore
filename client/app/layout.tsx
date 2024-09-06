@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import FirebaseProvider from "@/components/Firebase/FirebaseProvider";
+import Header from "@/components/layout/Header";
 
 export const metadata: Metadata = {
   title: "Weeklyscore",
@@ -27,7 +28,10 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <FirebaseProvider>{children}</FirebaseProvider>
+        <FirebaseProvider>
+          <Header />
+          {children}
+        </FirebaseProvider>
       </body>
     </html>
   );
