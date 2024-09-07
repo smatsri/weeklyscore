@@ -1,9 +1,10 @@
 import LatestSessionsCard from "@/components/dashboard/LatestSessionsCard";
+import PlayerBalanceGraph from "@/components/dashboard/PlayerBalanceGraph";
 import PlayersCard from "@/components/dashboard/PlayersCard";
 import { getData } from "@/lib/data";
 
 const Dashboard = async () => {
-  const { players, sessions } = await getData();
+  const { players, sessions, playerBalances } = await getData();
 
   return (
     <main>
@@ -14,6 +15,9 @@ const Dashboard = async () => {
         </div>
         <div className="w-full max-w-md">
           <LatestSessionsCard sessions={sessions} />
+        </div>
+        <div className="w-full max-w-md">
+          <PlayerBalanceGraph players={playerBalances} />
         </div>
       </div>
     </main>
