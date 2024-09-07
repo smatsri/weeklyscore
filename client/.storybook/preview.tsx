@@ -13,7 +13,7 @@ const fontSans = Inter({
 // Create a decorator to apply the font class
 const withGlobalStyles = (StoryFn: () => JSX.Element) => (
   <div
-    className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable}`}
+    className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable} `}
   >
     <StoryFn />
   </div>

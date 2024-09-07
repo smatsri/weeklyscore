@@ -15,4 +15,15 @@ export interface DashboardData {
       total: number;
     }[];
   };
+
+  getPlayerBalance: {
+    nodes: {
+      playerName: string;
+      startingBalance: number;
+      sessions: {
+        date: string;
+        amount: number;
+      }[];
+    }[];
+  };
 }

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const DASHBOARD_DATA_QUERY = gql`
-  query DashboarData($numSessions: Int) {
+  query DashboarData($numSessions: Int, $fromDate: Date) {
     allSessionTotalWinnings(first: $numSessions, orderBy: CREATED_AT_DESC) {
       edges {
         node {
@@ -16,6 +16,14 @@ export const DASHBOARD_DATA_QUERY = gql`
         playerId
         playerName
         total
+      }
+    }
+
+    getPlayerBalance(fromDate: $fromDate) {
+      nodes {
+        playerName
+        startingBalance
+        sessions
       }
     }
   }
