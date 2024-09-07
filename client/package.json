@@ -9,7 +9,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "serve": "live-server ./out"
+    "serve": "live-server ../static-site"
   },
   "dependencies": {
     "@apollo/client": "^3.11.7",
