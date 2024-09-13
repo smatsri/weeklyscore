@@ -1,10 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/weeklyscore-server/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true
+    "webpack": true,
+    "tsConfigPath": "apps/weeklyscore-server/tsconfig.app.json"
   },
   "projects": {
     "authentication": {
@@ -42,6 +43,26 @@
       "compilerOptions": {
         "tsConfigPath": "libs/postgraphile/tsconfig.lib.json"
       }
+    },
+    "weeklyscore-server": {
+      "type": "application",
+      "root": "apps/weeklyscore-server",
+      "entryFile": "main",
+      "sourceRoot": "apps/weeklyscore-server/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/weeklyscore-server/tsconfig.app.json"
+      }
+    },
+    "app-consumer": {
+      "type": "application",
+      "root": "apps/app-consumer",
+      "entryFile": "main",
+      "sourceRoot": "apps/app-consumer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/app-consumer/tsconfig.app.json"
+      }
     }
-  }
+  },
+  "monorepo": true,
+  "root": "apps/weeklyscore-server"
 }

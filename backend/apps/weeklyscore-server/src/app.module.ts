@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
-import { join } from 'path';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
