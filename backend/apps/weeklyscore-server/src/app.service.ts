@@ -8,6 +8,7 @@ import {
 @Injectable()
 export class AppService {
   private readonly client: ClientProxy;
+  private couter = 0;
 
   constructor() {
     this.client = ClientProxyFactory.create({
@@ -24,6 +25,6 @@ export class AppService {
 
   async publishTestEvent() {
     console.debug('publishTestEvent called');
-    this.client.emit('test_consumer', {});
+    this.client.emit('test_consumer', { test: this.couter++ });
   }
 }

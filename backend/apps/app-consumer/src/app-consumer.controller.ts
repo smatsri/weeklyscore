@@ -3,10 +3,10 @@ import { EventPattern } from '@nestjs/microservices';
 
 @Controller()
 export class AppConsumerController {
-  constructor() {}
+  constructor() { }
 
   @EventPattern('test_consumer')
-  getHello() {
-    console.debug('test_consumer called');
+  getHello(data: any) {
+    console.debug('test_consumer called', data);
   }
 }
