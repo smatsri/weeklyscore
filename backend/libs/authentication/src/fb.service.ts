@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FirebaseAuthService implements OnModuleInit {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) { }
   onModuleInit() {
     const relativePath = this.configService.get<string>(
       'GOOGLE_APPLICATION_CREDENTIALS',
