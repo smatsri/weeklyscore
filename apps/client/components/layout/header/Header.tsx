@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,6 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   userName: string | null;
@@ -22,12 +22,23 @@ export default function Header({ userName, onSignOut, onSignIn }: Props) {
     <header className="bg-background border-b" dir="rtl">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link
-            href="/dashboard"
-            className="text-primary hover:text-primary/80 text-sm font-medium"
-          >
-            דאשבורד
-          </Link>
+          <div className="flex items-center">
+            <div className="flex-shrink-0 ml-4">
+              <Image
+                src="/img/logo.png?height=40&width=40"
+                alt="לוגו"
+                width={40}
+                height={40}
+                className="h-10 w-auto"
+              />
+            </div>
+            <Link
+              href="/dashboard"
+              className="text-primary hover:text-primary/80 text-sm font-medium mr-4"
+            >
+              דאשבורד
+            </Link>
+          </div>
           <div className="flex items-center">
             {userName ? (
               <DropdownMenu>
