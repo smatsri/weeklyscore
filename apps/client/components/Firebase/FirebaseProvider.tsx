@@ -10,6 +10,9 @@ const nullContextValue = {
   signin: async () => {
     throw new Error("Not implemented");
   },
+  signout: async () => {
+    throw new Error("Not implemented");
+  },
   user: null,
 };
 
