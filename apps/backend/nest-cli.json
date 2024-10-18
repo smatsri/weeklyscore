@@ -4,7 +4,6 @@
   "sourceRoot": "apps/weeklyscore-server/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
     "tsConfigPath": "apps/weeklyscore-server/tsconfig.app.json"
   },
   "projects": {
