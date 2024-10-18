@@ -1,19 +1,12 @@
 import React from "react";
 import type { Preview } from "@storybook/react";
 import "../app/globals.css"; // Ensure global styles are imported
-
-// Import Google Fonts
-import { Inter } from "next/font/google";
-
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+import rubik from "../fonts/rubik";
 
 // Create a decorator to apply the font class
 const withGlobalStyles = (StoryFn: () => JSX.Element) => (
   <div
-    className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable} `}
+    className={`min-h-screen bg-background font-sans antialiased ${rubik.className} `}
   >
     <StoryFn />
   </div>
