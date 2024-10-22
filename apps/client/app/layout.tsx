@@ -17,7 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning>
+    <html
+      lang="he"
+      dir="rtl"
+      suppressHydrationWarning
+      style={{ direction: "rtl" }}
+      className="text-right"
+    >
       <body className={cn("min-h-screen bg-background", rubik.className)}>
         <FirebaseProvider>
           <HeaderContainer />
