@@ -4,14 +4,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NewSession } from "./model";
 
-export default function AddPlayerForm() {
+type Props = {
+  onSubmit: (playerName: string) => void;
+};
+export default function AddPlayerForm({ onSubmit }: Props) {
   const [playerName, setPlayerName] = useState("");
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log("טופס נשלח:", { playerName });
-    // Here you would typically send this data to an API
+    onSubmit(playerName);
   };
 
   return (

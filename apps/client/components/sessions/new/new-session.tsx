@@ -3,18 +3,31 @@
 import BuyinTable from "@/components/sessions/new/buyin-table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Buttons, Title, Layout, Main } from "./components";
+import { Api, useNewSession } from "./model";
 
-const NewSession = () => {
+// Mock data for users and amounts
+
+type Props = {
+  api: Api;
+};
+const NewSession = ({ api }: Props) => {
+  const { addBuyin, addPlayer, buyins, players } = useNewSession(api);
+  console.debug("Buyins:", buyins);
+  console.debug("Players:", players);
   return (
     <Layout>
       <Title title="סשיין חדש" />
       <Main>
         <Card>
           <CardHeader>
-            <Buttons />
+            <Buttons
+              addBuyin={addBuyin}
+              addPlayer={addPlayer}
+              players={players}
+            />
           </CardHeader>
           <CardContent>
-            <BuyinTable />
+            <BuyinTable buyins={buyins} />
           </CardContent>
         </Card>
       </Main>

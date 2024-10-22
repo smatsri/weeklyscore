@@ -11,21 +11,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { NewSession, Player } from "./model";
 
-const users = [
-  { id: 1, name: "אלה כהן" },
-  { id: 2, name: "דוד לוי" },
-  { id: 3, name: "מיכל גולן" },
-  { id: 4, name: "יוסף אברהם" },
-];
-const AddBuyinForm = () => {
+type Props = {
+  players: Player[];
+  onSubmit: (playerId: string, amount: number) => void;
+};
+const AddBuyinForm = ({ players, onSubmit }: Props) => {
   const [selectedUser, setSelectedUser] = useState("");
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("טופס נשלח:", { selectedUser, amount });
-    // Here you would typically send this data to an API
+    onSubmit(selectedUser, amount);
   };
   return (
     <div dir="rtl" lang="he" className="font-sans">
@@ -40,13 +38,13 @@ const AddBuyinForm = () => {
               <SelectValue placeholder="בחר משתמש" />
             </SelectTrigger>
             <SelectContent>
-              {users.map((user) => (
+              {players.map((player) => (
                 <SelectItem
-                  key={user.id}
-                  value={user.id.toString()}
+                  key={player.id}
+                  value={player.id.toString()}
                   className="text-right"
                 >
-                  {user.name}
+                  {player.name}
                 </SelectItem>
               ))}
             </SelectContent>

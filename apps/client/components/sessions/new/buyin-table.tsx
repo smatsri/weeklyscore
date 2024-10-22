@@ -6,17 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Buyin } from "./model";
 
-// Mock data for users and amounts
-const userData = [
-  { id: 1, name: "אלה כהן", amount: 1000 },
-  { id: 2, name: "דוד לוי", amount: 1500 },
-  { id: 3, name: "מיכל גולן", amount: 750 },
-  { id: 4, name: "יוסף אברהם", amount: 2000 },
-  { id: 5, name: "רחל ברק", amount: 1250 },
-];
-
-const BuyinTable = () => {
+type Props = {
+  buyins: Buyin[];
+};
+const BuyinTable = ({ buyins }: Props) => {
   return (
     <div dir="rtl" lang="he" className="font-sans">
       <Table>
@@ -27,12 +22,12 @@ const BuyinTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {userData.map((user) => (
-            <TableRow key={user.id}>
+          {buyins.map((buyin) => (
+            <TableRow key={buyin.id}>
               <TableCell className="font-medium text-right">
-                {user.name}
+                {buyin.player.name}
               </TableCell>
-              <TableCell className="text-left">{user.amount} ₪</TableCell>
+              <TableCell className="text-left">{buyin.amount} ₪</TableCell>
             </TableRow>
           ))}
         </TableBody>
