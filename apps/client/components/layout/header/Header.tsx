@@ -38,6 +38,12 @@ export default function Header({ userName, onSignOut, onSignIn }: Props) {
             >
               דאשבורד
             </Link>
+            <Link
+              href="/sessions"
+              className="text-primary hover:text-primary/80 text-sm font-medium mr-4"
+            >
+              סשיינים
+            </Link>
           </div>
           <div className="flex items-center">
             {userName ? (
