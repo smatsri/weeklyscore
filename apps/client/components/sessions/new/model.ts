@@ -64,7 +64,6 @@ export const useNewSession = (api: Api) => {
       const res = await api.addPlayer(name);
       if (res.success) {
         const newPlayers = [...players, res.data];
-        console.debug(newPlayers);
         setPlayers(newPlayers);
       }
       return res.success;
@@ -72,9 +71,6 @@ export const useNewSession = (api: Api) => {
     [api, players]
   );
 
-  console.debug({
-    players,
-  });
   return {
     players,
     buyins,

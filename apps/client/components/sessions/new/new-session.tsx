@@ -12,8 +12,6 @@ type Props = {
 };
 const NewSession = ({ api }: Props) => {
   const { addBuyin, addPlayer, buyins, players } = useNewSession(api);
-  console.debug("Buyins:", buyins);
-  console.debug("Players:", players);
   return (
     <Layout>
       <Title title="סשיין חדש" />

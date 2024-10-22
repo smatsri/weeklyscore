@@ -14,9 +14,7 @@ const useFirebase = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    console.debug("Initializing Firebase...");
     const _app = initializeApp(firebaseConfig);
-    console.debug("Firebase initialized:", _app.name);
     setApp(_app);
 
     const auth = getAuth(_app);
