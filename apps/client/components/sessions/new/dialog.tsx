@@ -16,18 +16,27 @@ type Props = {
   title: string;
   buttonText: string;
   buttonVariant?: "outline" | "default";
+  open: boolean;
+  setOpen: (open: boolean) => void;
 };
 
-const Dialog = ({ children, title, buttonText, buttonVariant }: Props) => {
+const Dialog = ({
+  children,
+  title,
+  buttonText,
+  buttonVariant,
+  open,
+  setOpen,
+}: Props) => {
   return (
-    <UIDialog>
+    <UIDialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={buttonVariant || "outline"}>{buttonText}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{children}</DialogDescription>
+          {children}
         </DialogHeader>
       </DialogContent>
     </UIDialog>
