@@ -2,8 +2,9 @@
 
 import BuyinTable from "@/components/sessions/new/buyin-table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Buttons, Title, Layout, Main } from "./components";
+import { Title, Layout, Main } from "./layout";
 import { Api, useNewSession } from "./model";
+import { Buttons } from "./buttons";
 
 // Mock data for users and amounts
 
