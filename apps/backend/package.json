@@ -25,6 +25,7 @@
     "migration:run": "npm run typeorm migration:run -- -d ./typeorm.config.ts"
   },
   "dependencies": {
+    "@repo/schema": "*",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.0",
