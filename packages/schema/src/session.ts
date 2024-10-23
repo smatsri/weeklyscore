@@ -69,3 +69,5 @@ export const SessionEvent = {
 
 export type SessionEvent = Schema.Schema.Type<typeof SessionEventSchema>;
 export type SessionCommand = Schema.Schema.Type<typeof SessionCommandSchema>;
+
+type X = ReturnType<typeof SessionEvent.decode>;

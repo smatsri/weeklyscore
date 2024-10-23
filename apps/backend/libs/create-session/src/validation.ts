@@ -1,5 +1,5 @@
 import { pipe } from 'effect';
-import { match, map } from 'effect/Either';
+import { match, map, Either, gen } from 'effect/Either';
 import { MessageEnvelope } from './schema';
 import { ParseError } from 'effect/ParseResult';
 import { SessionCommand, SessionEvent } from '@repo/schema/session';
@@ -17,14 +17,15 @@ const Valid = <T>(value: T) => ({ type: 'valid', value }) as Valid<T>;
 
 export type ValidationResult<T> = Invalid | Valid<T>;
 
-const Validate =
-  <T>(decode: (data: unknown) => T) =>
-  (msg: any) =>
-    pipe(
-      MessageEnvelope.decode(msg),
-      map(({ data }) => decode(data)),
-      match({ onLeft: Invalid, onRight: Valid }),
-    );
+const Validate = <T>(mapper: (data: unknown) => Either<T, ParseError>) =>
+  gen(function* (msg: any) {
+    const env = yield* MessageEnvelope.decode(msg);
+    const data = yield* mapper(env.data);
+    return {
+      ...env,
+      data,
+    };
+  });
 
 export const validateEventMessage = Validate(SessionEvent.decode);
 export const validateCommandMessage = Validate(SessionCommand.decode);
