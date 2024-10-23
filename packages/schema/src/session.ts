@@ -14,18 +14,17 @@ export const CreatePlayer = Schema.Struct({
 export const CreateBuyin = Schema.Struct({
   type: Schema.Literal("create-buyin"),
   payload: Schema.Struct({
+    sessionId: Schema.NonEmptyString,
     amount: Schema.Int.pipe(Schema.positive()),
     playerId: Schema.String,
   }),
 });
 
-export const SessionCommand = Schema.Union(
+export const SessionCommandSchema = Schema.Union(
   CreateSession,
   CreatePlayer,
   CreateBuyin
 );
-
-export type SessionCommand = Schema.Schema.Type<typeof SessionCommand>;
 
 const SessionCreated = Schema.Struct({
   type: Schema.Literal("session-created"),
@@ -52,10 +51,21 @@ const BuyinCreated = Schema.Struct({
   }),
 });
 
-export const SessionEvent = Schema.Union(
+export const SessionEventSchema = Schema.Union(
   SessionCreated,
   PlayerCreated,
   BuyinCreated
 );
 
-export type SessionEvent = Schema.Schema.Type<typeof SessionEvent>;
+export const SessionCommand = {
+  encode: Schema.encodeUnknownEither(SessionCommandSchema),
+  decode: Schema.decodeUnknownEither(SessionCommandSchema),
+};
+
+export const SessionEvent = {
+  encode: Schema.encodeUnknownEither(SessionEventSchema),
+  decode: Schema.decodeUnknownEither(SessionEventSchema),
+};
+
+export type SessionEvent = Schema.Schema.Type<typeof SessionEventSchema>;
+export type SessionCommand = Schema.Schema.Type<typeof SessionCommandSchema>;

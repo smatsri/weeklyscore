@@ -46,6 +46,12 @@
       ],
       "@app/postgraphile/*": [
         "libs/postgraphile/src/*"
+      ],
+      "@app/create-session": [
+        "libs/create-session/src"
+      ],
+      "@app/create-session/*": [
+        "libs/create-session/src/*"
       ]
     }
   }

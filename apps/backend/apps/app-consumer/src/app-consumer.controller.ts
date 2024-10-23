@@ -1,3 +1,4 @@
+import {} from '@repo/schema/session';
 import { TestEvent } from '@app/domain/events';
 import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
