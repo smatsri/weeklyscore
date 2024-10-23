@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { COMMAND_NAME } from '../config';
-import { validateEventMessage } from '../validation';
+import { validateCommandMessage } from '../validation';
 
 @Controller()
 export class CommandListenerController {
@@ -9,11 +9,11 @@ export class CommandListenerController {
 
   @EventPattern(COMMAND_NAME)
   handle(data: any) {
-    const valRes = validateEventMessage(data);
+    const valRes = validateCommandMessage(data);
     if (valRes.type === 'invalid') {
       console.debug('invalid event', valRes.error);
     } else {
-      console.debug('new event called', valRes.value);
+      console.debug('new event called', valRes.value.data);
     }
   }
 }

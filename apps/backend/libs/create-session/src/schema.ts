@@ -3,6 +3,7 @@ import { Schema } from 'effect';
 export const MessageEnvelopeSchema = Schema.Struct({
   requestId: Schema.String,
   callerId: Schema.String,
+  topic: Schema.String,
   data: Schema.Unknown,
 });
 
