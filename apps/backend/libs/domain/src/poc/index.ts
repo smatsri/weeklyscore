@@ -1,28 +1,14 @@
 import { Observable, Subscription } from 'rxjs';
 
-type CreateSession = {
-  type: 'create-session';
-  playingGroupId: string;
+type Command = {
+  type: string;
+  payload: unknown;
 };
 
-type CreatePlayer = {
-  type: 'create-player';
-  name: string;
+type Event = {
+  type: string;
+  payload: unknown;
 };
-
-type Cmd = CreateSession | CreatePlayer;
-
-type SessionCreated = {
-  type: 'session-created';
-  id: string;
-};
-
-type PlayerCreated = {
-  type: 'player-created';
-  id: string;
-};
-
-type Evt = SessionCreated | PlayerCreated;
 
 type Message<T> = {
   headers: {
@@ -38,13 +24,13 @@ function createMessage<T>(correlationId: string, payload: T): Message<T> {
   };
 }
 
-interface ICommandPublisher {
-  publish: (topic: string, message: Message<Cmd>) => void;
-  events: Observable<Message<Evt>>;
+interface ICommandPublisher<C extends Command, E extends Event> {
+  publish: (topic: string, message: Message<C>) => void;
+  events: Observable<Message<E>>;
 }
 
 type TrackPending = { type: 'pending' };
-type TrackComplete = { type: 'complete'; result: unknown };
+type TrackComplete = { type: 'complete'; value: unknown };
 type TrackResult = TrackPending | TrackComplete;
 
 interface CommandTracker {
@@ -60,11 +46,11 @@ type StillPending = { type: 'still-pending' };
 type Completed = { type: 'completed'; result: unknown };
 type CommandResult = NotFound | StillPending | Completed;
 
-class CommandManager {
+class CommandManager<C extends Command, E extends Event> {
   private readonly subscription: Subscription;
 
   constructor(
-    private publisher: ICommandPublisher,
+    private publisher: ICommandPublisher<C, E>,
     private tracker: CommandTracker,
   ) {
     this.subscription = this.publisher.events.subscribe({
@@ -74,7 +60,7 @@ class CommandManager {
     });
   }
 
-  publishCmd(correlationId: string, cmd: Cmd, track = true) {
+  publishCmd(correlationId: string, cmd: C, track = true) {
     const msg = createMessage(correlationId, cmd);
 
     this.publisher.publish('cmd', msg);
@@ -89,9 +75,9 @@ class CommandManager {
       return { type: 'not-found' };
     }
 
-    const result = this.tracker.getResult(correlationId);
+    const trackingRes = this.tracker.getResult(correlationId);
 
-    switch (result.type) {
+    switch (trackingRes.type) {
       case 'pending':
         return { type: 'still-pending' };
 
@@ -99,11 +85,11 @@ class CommandManager {
         if (!keepTracking) {
           this.tracker.stopTracking(correlationId);
         }
-        return { type: 'completed', result: result.result };
+        return { type: 'completed', result: trackingRes.value };
     }
   }
 
-  private onEvent(evt: Message<Evt>) {
+  private onEvent(evt: Message<E>) {
     const { correlationId } = evt.headers;
     if (this.tracker.isActive(correlationId)) {
       this.tracker.setResult(correlationId, evt.payload);
@@ -114,3 +100,34 @@ class CommandManager {
     this.subscription.unsubscribe();
   }
 }
+
+type CreateSession = {
+  type: 'create-session';
+  payload: {
+    playingGroupId: string;
+  };
+};
+
+type CreatePlayer = {
+  type: 'create-player';
+  payload: {
+    name: string;
+  };
+};
+
+type SessionCreated = {
+  type: 'session-created';
+  payload: {
+    id: string;
+  };
+};
+
+type PlayerCreated = {
+  type: 'player-created';
+  payload: {
+    id: string;
+  };
+};
+
+type SessionCmd = CreateSession | CreatePlayer;
+type SessionEvent = SessionCreated | PlayerCreated;
