@@ -1,13 +1,14 @@
-import { Observable, Subscription } from 'rxjs';
+import { Observer, Subscription } from 'rxjs';
 
-type Command = {
-  type: string;
-  payload: unknown;
-};
+const CallOnlyOnce = (fn: () => void) => {
+  let called = false;
 
-type Event = {
-  type: string;
-  payload: unknown;
+  return () => {
+    if (!called) {
+      fn();
+      called = true;
+    }
+  };
 };
 
 type Message<T> = {
@@ -24,14 +25,23 @@ function createMessage<T>(correlationId: string, payload: T): Message<T> {
   };
 }
 
-interface ICommandPublisher<C extends Command, E extends Event> {
-  publish: (topic: string, message: Message<C>) => void;
-  events: Observable<Message<E>>;
+interface IPublisher {
+  publish: (topic: string, message: Message<unknown>) => void;
+  subscribe: (topic: string, obs: Observer<Message<unknown>>) => Subscription;
 }
 
-type TrackPending = { type: 'pending' };
-type TrackComplete = { type: 'complete'; value: unknown };
-type TrackResult = TrackPending | TrackComplete;
+type Timed<T> = {
+  date: Date;
+  value: T;
+};
+
+type TrackPending = { type: 'track-pending' };
+type TrackCompleted = { type: 'track-complete'; value: Timed<unknown> };
+type TrackCompletedMultiple = {
+  type: 'track-complete-multiple';
+  values: Timed<unknown>[];
+};
+type TrackResult = TrackPending | TrackCompleted | TrackCompletedMultiple;
 
 interface CommandTracker {
   startTrack(correlationId: string): void;
@@ -43,27 +53,35 @@ interface CommandTracker {
 
 type NotFound = { type: 'not-found' };
 type StillPending = { type: 'still-pending' };
-type Completed = { type: 'completed'; result: unknown };
-type CommandResult = NotFound | StillPending | Completed;
+type Completed = { type: 'completed'; result: Timed<unknown> };
+type CompletedMultiple = {
+  type: 'completed-multiple';
+  results: Timed<unknown>[];
+};
 
-class CommandManager<C extends Command, E extends Event> {
-  private readonly subscription: Subscription;
+export type CommandResult =
+  | NotFound
+  | StillPending
+  | Completed
+  | CompletedMultiple;
 
+type Config = {
+  COMMAND_TOPIC: string;
+  EVENT_TOPIC: string;
+  DEAD_LETTERS_TOPIC: string;
+};
+
+export class CommandManager<TCmd> {
   constructor(
-    private publisher: ICommandPublisher<C, E>,
+    private publisher: IPublisher,
     private tracker: CommandTracker,
-  ) {
-    this.subscription = this.publisher.events.subscribe({
-      next: this.onEvent.bind(this),
-      error: (err) => console.error('Error handling event', err),
-      complete: () => console.log('Event stream completed'),
-    });
-  }
+    private config: Config,
+  ) {}
 
-  publishCmd(correlationId: string, cmd: C, track = true) {
+  publishCmd(correlationId: string, cmd: TCmd, track = true) {
     const msg = createMessage(correlationId, cmd);
 
-    this.publisher.publish('cmd', msg);
+    this.publisher.publish(this.config.COMMAND_TOPIC, msg);
 
     if (track) {
       this.tracker.startTrack(correlationId);
@@ -78,56 +96,67 @@ class CommandManager<C extends Command, E extends Event> {
     const trackingRes = this.tracker.getResult(correlationId);
 
     switch (trackingRes.type) {
-      case 'pending':
+      case 'track-pending':
         return { type: 'still-pending' };
 
-      case 'complete':
+      case 'track-complete':
         if (!keepTracking) {
           this.tracker.stopTracking(correlationId);
         }
         return { type: 'completed', result: trackingRes.value };
+
+      case 'track-complete-multiple':
+        if (!keepTracking) {
+          this.tracker.stopTracking(correlationId);
+        }
+        return { type: 'completed-multiple', results: trackingRes.values };
     }
   }
+}
 
-  private onEvent(evt: Message<E>) {
+export class EventManager<TEvt> {
+  constructor(
+    private publisher: IPublisher,
+    private config: Config,
+  ) {}
+
+  publishEvent(correlationId: string, event: TEvt) {
+    const msg = createMessage(correlationId, event);
+    this.publisher.publish(this.config.EVENT_TOPIC, msg);
+  }
+}
+
+export class EventListener implements Disposable {
+  private readonly _dispose: () => void;
+
+  constructor(
+    private readonly publisher: IPublisher,
+    private readonly tracker: CommandTracker,
+    private readonly config: Config,
+  ) {
+    const subscription = publisher.subscribe(config.EVENT_TOPIC, {
+      next: (msg: Message<unknown>) => this.onEvent(msg),
+      error: (err) => console.error('Error handling event', err),
+      complete: () => console.log('Event stream completed'),
+    });
+
+    this._dispose = CallOnlyOnce(subscription.unsubscribe);
+  }
+
+  private onEvent(evt: Message<unknown>) {
     const { correlationId } = evt.headers;
     if (this.tracker.isActive(correlationId)) {
       this.tracker.setResult(correlationId, evt.payload);
+    } else {
+      this.publisher.publish(this.config.DEAD_LETTERS_TOPIC, evt);
     }
   }
 
   dispose() {
-    this.subscription.unsubscribe();
+    this._dispose();
+  }
+
+  [Symbol.dispose](): void {
+    this.dispose();
   }
 }
-
-type CreateSession = {
-  type: 'create-session';
-  payload: {
-    playingGroupId: string;
-  };
-};
-
-type CreatePlayer = {
-  type: 'create-player';
-  payload: {
-    name: string;
-  };
-};
-
-type SessionCreated = {
-  type: 'session-created';
-  payload: {
-    id: string;
-  };
-};
-
-type PlayerCreated = {
-  type: 'player-created';
-  payload: {
-    id: string;
-  };
-};
-
-type SessionCmd = CreateSession | CreatePlayer;
-type SessionEvent = SessionCreated | PlayerCreated;
