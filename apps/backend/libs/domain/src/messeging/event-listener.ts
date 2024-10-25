@@ -1,4 +1,5 @@
-import { Config, ICommandTracker, IPublisher, Message } from './types';
+import { CommandTracker } from './command-tracker/command-tracker';
+import { Config, IPublisher, Message } from './types';
 import { CallOnlyOnce } from './utils';
 
 export class EventListener implements Disposable {
@@ -6,7 +7,7 @@ export class EventListener implements Disposable {
 
   constructor(
     private readonly publisher: IPublisher,
-    private readonly tracker: ICommandTracker,
+    private readonly tracker: CommandTracker,
     private readonly config: Config,
   ) {
     const subscription = publisher.subscribe(config.EVENT_TOPIC, {

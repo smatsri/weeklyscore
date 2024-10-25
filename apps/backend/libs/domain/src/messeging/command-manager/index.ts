@@ -1,9 +1,11 @@
-import { Config, ICommandTracker, IPublisher, Message, Timed } from './types';
+import { CommandTracker } from '../command-tracker/command-tracker';
+import { Config, IPublisher, Message, Timed } from '../types';
+import { CommandResult } from './types';
 
-export class CommandManager<TCmd> {
+export class CommandManager<TCmd, TEvt> {
   constructor(
     private publisher: IPublisher,
-    private tracker: ICommandTracker,
+    private tracker: CommandTracker,
     private config: Config,
   ) {}
 
@@ -19,40 +21,34 @@ export class CommandManager<TCmd> {
 
   getResult(correlationId: string, keepTracking = true): CommandResult {
     if (!this.tracker.isActive(correlationId)) {
-      return { type: 'not-found' };
+      return CommandResult.NotFound();
     }
 
     const trackingRes = this.tracker.getResult(correlationId);
 
     switch (trackingRes.type) {
       case 'track-pending':
-        return { type: 'still-pending' };
+        return CommandResult.StillPending();
 
       case 'track-complete':
         if (!keepTracking) {
           this.tracker.stopTracking(correlationId);
         }
-        return { type: 'completed', result: trackingRes.value };
+
+        return CommandResult.Completed(trackingRes.value);
 
       case 'track-complete-multiple':
         if (!keepTracking) {
           this.tracker.stopTracking(correlationId);
         }
-        return { type: 'completed-multiple', results: trackingRes.values };
+        return CommandResult.CompletedMultiple(trackingRes.values);
+      default:
+        return CommandResult.NotFound();
     }
   }
+
+  publishEvent(correlationId: string, event: TEvt) {
+    const msg = Message(correlationId, event);
+    this.publisher.publish(this.config.EVENT_TOPIC, msg);
+  }
 }
-
-type NotFound = { type: 'not-found' };
-type StillPending = { type: 'still-pending' };
-type Completed = { type: 'completed'; result: Timed<unknown> };
-type CompletedMultiple = {
-  type: 'completed-multiple';
-  results: Timed<unknown>[];
-};
-
-export type CommandResult =
-  | NotFound
-  | StillPending
-  | Completed
-  | CompletedMultiple;

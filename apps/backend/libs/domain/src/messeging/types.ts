@@ -5,10 +5,15 @@ export type Timed<T> = {
   value: T;
 };
 
+export const Timed = {
+  getValue: <T>(value: Timed<T>): T => value.value,
+};
+
 export type Config = {
   COMMAND_TOPIC: string;
   EVENT_TOPIC: string;
   DEAD_LETTERS_TOPIC: string;
+  CACHE_TTL_SECONDS: number;
 };
 
 export type Message<T> = {
@@ -31,20 +36,35 @@ export interface IPublisher {
 }
 
 type TrackPending = { type: 'track-pending' };
-type TrackCompleted = { type: 'track-complete'; value: Timed<unknown> };
+type TrackCompleted = { type: 'track-complete'; value: unknown };
 type TrackCompletedMultiple = {
   type: 'track-complete-multiple';
-  values: Timed<unknown>[];
+  values: unknown[];
 };
+type TrackNotFound = { type: 'track-not-found' };
+
 export type TrackResult =
   | TrackPending
   | TrackCompleted
-  | TrackCompletedMultiple;
+  | TrackCompletedMultiple
+  | TrackNotFound;
 
-export interface ICommandTracker {
-  startTrack(correlationId: string): void;
-  setResult(correlationId: string, result: unknown): void;
-  getResult(correlationId: string): TrackResult;
-  isActive(correlationId: string): boolean;
-  stopTracking(correlationId: string): void;
+export const TrackResult = {
+  Pending: (): TrackPending => ({ type: 'track-pending' }),
+  Complete: (value: unknown): TrackCompleted => ({
+    type: 'track-complete',
+    value,
+  }),
+  CompleteMultiple: (values: unknown[]): TrackCompletedMultiple => ({
+    type: 'track-complete-multiple',
+    values: values,
+  }),
+  NotFound: (): TrackNotFound => ({ type: 'track-not-found' }),
+};
+
+export interface ICache {
+  get: <T>(key: string) => T | undefined;
+  set: <T>(key: string, value: T, ttl?: number) => void;
+  del: (key: string) => void;
+  hasKey: (key: string) => boolean;
 }
