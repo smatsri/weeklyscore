@@ -12,13 +12,14 @@ export class CommandTracker {
     this.setItem(correlationId, item);
   }
 
-  setResult(correlationId: string, value: unknown): void {
+  setResult(correlationId: string, value: unknown) {
     const item = this.cache.get<CacheItem>(correlationId);
-    if (!item) return;
+    if (!item) return false;
 
     const newItem = CacheItem.next(item, value);
 
     this.setItem(correlationId, newItem);
+    return true;
   }
 
   getResult(correlationId: string): TrackResult {
