@@ -24,12 +24,13 @@ export class CommandManager<TCmd, TResult> {
     this.publisher.publish(this.config.EVENT_TOPIC, msg);
   }
 
-  getResult(correlationId: string): CommandResult {
-    if (!this.tracker.isActive(correlationId)) {
+  async getResult(correlationId: string) {
+    const isActive = this.tracker.isActive(correlationId);
+    if (!isActive) {
       return CommandResult.NotFound();
     }
 
-    const trackingRes = this.tracker.getResult(correlationId);
+    const trackingRes = await this.tracker.getResult(correlationId);
 
     switch (trackingRes.type) {
       case 'track-pending':

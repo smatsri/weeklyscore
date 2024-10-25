@@ -31,20 +31,20 @@ const createServices = () => {
 };
 
 describe('CommandManager', () => {
-  it('after publish should be pending', () => {
+  it('after publish should be pending', async () => {
     const { commandManager, tracker } = createServices();
     commandManager.publishCmd('correlationId', 'command');
     //tracker.setResult('correlationId', 'result');
-    const res = commandManager.getResult('correlationId');
+    const res = await commandManager.getResult('correlationId');
 
     expect(res.type).toBe('still-pending');
   });
 
-  it('after responding should be completed', () => {
+  it('after responding should be completed', async () => {
     const { commandManager, tracker } = createServices();
     commandManager.publishCmd('correlationId', 'whats up?');
     tracker.setResult('correlationId', 'all good');
-    const res = commandManager.getResult('correlationId');
+    const res = await commandManager.getResult('correlationId');
 
     expect(res.type).toBe('completed');
   });
