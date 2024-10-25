@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { CommandManager, Config, IPublisher, ICache } from '..';
 import { InMemoryCache } from '../cache/inmemory';
-import { CommandTracker } from './command-tracker';
+import { CommandTracker } from '../command-tracker/command-tracker';
 
 const cache = new InMemoryCache();
 

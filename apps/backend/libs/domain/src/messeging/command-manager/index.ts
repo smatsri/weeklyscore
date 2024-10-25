@@ -1,8 +1,8 @@
 import { CommandTracker } from '../command-tracker/command-tracker';
-import { Config, IPublisher, Message, Timed } from '../types';
+import { Config, IPublisher, Message } from '../types';
 import { CommandResult } from './types';
 
-export class CommandManager<TCmd, TEvt> {
+export class CommandManager<TCmd, TResult> {
   constructor(
     private publisher: IPublisher,
     private tracker: CommandTracker,
@@ -19,7 +19,12 @@ export class CommandManager<TCmd, TEvt> {
     }
   }
 
-  getResult(correlationId: string, keepTracking = true): CommandResult {
+  publishResult(correlationId: string, event: TResult) {
+    const msg = Message(correlationId, event);
+    this.publisher.publish(this.config.EVENT_TOPIC, msg);
+  }
+
+  getResult(correlationId: string): CommandResult {
     if (!this.tracker.isActive(correlationId)) {
       return CommandResult.NotFound();
     }
@@ -31,24 +36,16 @@ export class CommandManager<TCmd, TEvt> {
         return CommandResult.StillPending();
 
       case 'track-complete':
-        if (!keepTracking) {
-          this.tracker.stopTracking(correlationId);
-        }
-
         return CommandResult.Completed(trackingRes.value);
 
       case 'track-complete-multiple':
-        if (!keepTracking) {
-          this.tracker.stopTracking(correlationId);
-        }
         return CommandResult.CompletedMultiple(trackingRes.values);
       default:
         return CommandResult.NotFound();
     }
   }
 
-  publishEvent(correlationId: string, event: TEvt) {
-    const msg = Message(correlationId, event);
-    this.publisher.publish(this.config.EVENT_TOPIC, msg);
+  clear(correlationId: string) {
+    this.tracker.stopTracking(correlationId);
   }
 }

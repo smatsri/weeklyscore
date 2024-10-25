@@ -31,8 +31,8 @@ export function Message<T>(correlationId: string, payload: T): Message<T> {
 }
 
 export interface IPublisher {
-  publish: (topic: string, message: Message<unknown>) => void;
-  subscribe: (topic: string, obs: Observer<Message<unknown>>) => Subscription;
+  publish<T>(topic: string, message: Message<T>): void;
+  subscribe<T>(topic: string, obs: Observer<Message<T>>): Subscription;
 }
 
 type TrackPending = { type: 'track-pending' };
