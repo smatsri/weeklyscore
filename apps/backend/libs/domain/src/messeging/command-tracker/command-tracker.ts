@@ -9,7 +9,7 @@ export class CommandTracker {
 
   startTrack(correlationId: string): void {
     const item = CacheItem(TrackResult.Pending(), new Date());
-    this.cache.set(correlationId, item, this.config.CACHE_TTL_SECONDS * 1000);
+    this.setItem(correlationId, item);
   }
 
   setResult(correlationId: string, value: unknown): void {
