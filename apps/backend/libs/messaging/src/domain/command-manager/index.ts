@@ -24,20 +24,20 @@ export class CommandManager<TCmd, TResult> {
     this.publisher.publish(this.config.EVENT_TOPIC, msg);
   }
 
-  async getResult(correlationId: string) {
+  async getResult<T>(correlationId: string) {
     const isActive = this.tracker.isActive(correlationId);
     if (!isActive) {
       return CommandResult.NotFound();
     }
 
-    const trackingRes = await this.tracker.getResult(correlationId);
+    const trackingRes = await this.tracker.getResult<T>(correlationId);
 
     switch (trackingRes.type) {
       case 'track-pending':
         return CommandResult.StillPending();
 
       case 'track-complete':
-        return CommandResult.Completed(trackingRes.value);
+        return CommandResult.Completed<T>(trackingRes.value);
 
       case 'track-complete-multiple':
         return CommandResult.CompletedMultiple(trackingRes.values);

@@ -12,8 +12,8 @@ export class CommandTracker {
     this.setItem(correlationId, item);
   }
 
-  async setResult(correlationId: string, value: unknown) {
-    const item = await this.cache.get<CacheItem>(correlationId);
+  async setResult<T>(correlationId: string, value: T) {
+    const item = await this.cache.get<CacheItem<T>>(correlationId);
     if (!item) return false;
 
     const newItem = CacheItem.next(item, value);
@@ -22,16 +22,16 @@ export class CommandTracker {
     return true;
   }
 
-  async getResult(correlationId: string) {
+  async getResult<T>(correlationId: string) {
     const isActive = await this.isActive(correlationId);
     if (!isActive) return TrackResult.NotFound();
 
-    const item = await this.cache.get<CacheItem>(correlationId);
+    const item = await this.cache.get<CacheItem<T>>(correlationId);
     return item.value;
   }
 
-  async isActive(correlationId: string) {
-    const item = await this.cache.get<CacheItem>(correlationId);
+  async isActive<T>(correlationId: string) {
+    const item = await this.cache.get<CacheItem<T>>(correlationId);
     return (
       !!item &&
       Date.now() - item.date.getTime() < this.config.CACHE_TTL_SECONDS * 1000
@@ -42,7 +42,7 @@ export class CommandTracker {
     this.cache.del(correlationId);
   }
 
-  private setItem(correlationId: string, item: CacheItem): void {
+  private setItem<T>(correlationId: string, item: CacheItem<T>): void {
     this.cache.set(correlationId, item, this.config.CACHE_TTL_SECONDS * 1000);
   }
 }

@@ -19,9 +19,9 @@ const config: Config = {
 };
 
 // create command manager as a funciton
-const createServices = () => {
+const createServices = <C, E>() => {
   const tracker = new CommandTracker(cache, config);
-  const commandManager = new CommandManager(
+  const commandManager = new CommandManager<C, E>(
     publisher as IPublisher,
     tracker,
     config as Config,
@@ -47,5 +47,20 @@ describe('CommandManager', () => {
     const res = await commandManager.getResult('correlationId');
 
     expect(res.type).toBe('completed');
+  });
+
+  describe('generic command manager', () => {
+    it('should publish and get result', async () => {
+      const { commandManager, tracker } = createServices<string, string>();
+
+      commandManager.publishCmd('correlationId', 'whats up?');
+      tracker.setResult('correlationId', 'all good');
+      const res = await commandManager.getResult<string>('correlationId');
+
+      expect(res.type).toBe('completed');
+      if (res.type === 'completed') {
+        expect(res.result).toBe('all good');
+      }
+    });
   });
 });

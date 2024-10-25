@@ -36,26 +36,26 @@ export interface IPublisher {
 }
 
 type TrackPending = { type: 'track-pending' };
-type TrackCompleted = { type: 'track-complete'; value: unknown };
-type TrackCompletedMultiple = {
+type TrackCompleted<T> = { type: 'track-complete'; value: T };
+type TrackCompletedMultiple<T> = {
   type: 'track-complete-multiple';
-  values: unknown[];
+  values: T[];
 };
 type TrackNotFound = { type: 'track-not-found' };
 
-export type TrackResult =
+export type TrackResult<T> =
   | TrackPending
-  | TrackCompleted
-  | TrackCompletedMultiple
+  | TrackCompleted<T>
+  | TrackCompletedMultiple<T>
   | TrackNotFound;
 
 export const TrackResult = {
   Pending: (): TrackPending => ({ type: 'track-pending' }),
-  Complete: (value: unknown): TrackCompleted => ({
+  Complete: <T>(value: T): TrackCompleted<T> => ({
     type: 'track-complete',
     value,
   }),
-  CompleteMultiple: (values: unknown[]): TrackCompletedMultiple => ({
+  CompleteMultiple: <T>(values: T[]): TrackCompletedMultiple<T> => ({
     type: 'track-complete-multiple',
     values: values,
   }),
