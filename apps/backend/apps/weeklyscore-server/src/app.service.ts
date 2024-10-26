@@ -13,13 +13,14 @@ export class AppService {
 
   constructor() {
     this.client = ClientProxyFactory.create({
-      transport: Transport.REDIS, // Use the same transport as your microservice
+      transport: Transport.REDIS,
       options: {
         host: 'localhost',
         port: 6379,
       },
     });
   }
+
   getHello(): string {
     return 'Welcome Home!';
   }

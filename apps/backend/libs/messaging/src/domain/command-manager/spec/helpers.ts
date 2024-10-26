@@ -1,17 +1,9 @@
 import { CommandManager } from "..";
 import { InMemoryCache } from "./mocks/cache";
 import { CommandTracker } from "../../command-tracker/command-tracker";
-import { Config } from "../../types";
+import { config } from "@app/messaging/config";
 import { TestPublisher } from "./mocks/publisher";
 import { CommandResult } from "../types";
-
-const config: Config = {
-  COMMAND_TOPIC: 'command-topic',
-  DEAD_LETTERS_TOPIC: 'dead-letters-topic',
-  EVENT_TOPIC: 'event-topic',
-  CACHE_TTL_SECONDS: 100,
-};
-
 
 export const createServices = <C, E>() => {
   const cache = new InMemoryCache();
