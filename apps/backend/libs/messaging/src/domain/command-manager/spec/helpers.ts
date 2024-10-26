@@ -38,10 +38,10 @@ type TestOp =
 
 
 
-export const run = async <C, R>(...ops: TestOp[]): Promise<CommandResult<R> | null> => {
+export const run = async <C, R>(...ops: TestOp[]) => {
 
   const { commandManager } = createServices<C, R>();
-  let result: CommandResult<R> | null = null;
+
   const correlationId = 'correlationId';
 
   for (const op of ops) {
@@ -53,11 +53,6 @@ export const run = async <C, R>(...ops: TestOp[]): Promise<CommandResult<R> | nu
         await commandManager.publishResult(correlationId, op[1]);
         break;
       }
-      case 'get-result': {
-        const res = await commandManager.getResult<R>(correlationId);
-        result = res;
-        break;
-      }
 
       case 'clear': {
         commandManager.clear(correlationId);
@@ -65,6 +60,9 @@ export const run = async <C, R>(...ops: TestOp[]): Promise<CommandResult<R> | nu
       }
     }
   }
+
+
+  const result = await commandManager.getResult<R>(correlationId);
 
   return result;
 }

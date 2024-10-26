@@ -15,13 +15,15 @@ describe('result', () => {
 
   it('after set result should be completed', async () => {
 
-    const result = await runResult(
-      ['publish', ['correlationId', 'command']],
-      ['set-result', ['correlationId', 'result']]
+    const result = await runResult<string, string>(
+      ['publish', 'command'],
+      ['set-result', 'result']
     );
 
     expect(result).toBeDefined();
     expect(result.type).toBe('completed');
+    if (result.type !== 'completed') return;
+    expect(result.result).toBe('result');
   });
 
   it("after set result multiple times should be completed-multiple", async () => {
@@ -33,6 +35,10 @@ describe('result', () => {
 
     expect(result).toBeDefined();
     expect(result.type).toBe('completed-multiple');
+    if (result.type !== 'completed-multiple') return;
+
+    expect(result.results).toEqual(['result-1', 'result-2']);
+
   });
 
   it("after clear should be not-found", async () => {
@@ -43,6 +49,24 @@ describe('result', () => {
     );
 
     expect(result).toBeDefined();
+    expect(result.type).toBe('not-found');
+
+  });
+
+  it('cannot set result before publish', async () => {
+    const result = await runResult<string, string>(
+      ['set-result', 'result'],
+      ['publish', 'command'],
+    );
+
+    expect(result.type).toBe('still-pending');
+  });
+
+  it('cannot set result without publish', async () => {
+    const result = await runResult<string, string>(
+      ['set-result', 'result']
+    );
+
     expect(result.type).toBe('not-found');
   });
 
