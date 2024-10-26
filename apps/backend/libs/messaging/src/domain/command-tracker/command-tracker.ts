@@ -5,7 +5,7 @@ export class CommandTracker {
   constructor(
     private readonly cache: ICache,
     private readonly config: Config,
-  ) {}
+  ) { }
 
   startTrack(correlationId: string): void {
     const item = CacheItem(TrackResult.Pending(), new Date());

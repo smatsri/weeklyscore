@@ -1,4 +1,4 @@
-import { ICache } from '../types';
+import { ICache } from "../../../types";
 
 export class InMemoryCache implements ICache {
   private cache: Map<string, unknown> = new Map();

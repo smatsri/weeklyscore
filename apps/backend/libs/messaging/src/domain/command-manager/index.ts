@@ -7,7 +7,7 @@ export class CommandManager<TCmd, TResult> {
     private publisher: IPublisher,
     private tracker: CommandTracker,
     private config: Config,
-  ) {}
+  ) { }
 
   publishCmd(correlationId: string, cmd: TCmd, track = true) {
     const msg = Message(correlationId, cmd);
@@ -19,12 +19,13 @@ export class CommandManager<TCmd, TResult> {
     }
   }
 
-  publishResult(correlationId: string, event: TResult) {
+  async publishResult(correlationId: string, event: TResult) {
     const msg = Message(correlationId, event);
+    await this.tracker.setResult(correlationId, event);
     this.publisher.publish(this.config.EVENT_TOPIC, msg);
   }
 
-  async getResult<T>(correlationId: string) {
+  async getResult<T>(correlationId: string): Promise<CommandResult<T>> {
     const isActive = this.tracker.isActive(correlationId);
     if (!isActive) {
       return CommandResult.NotFound();
