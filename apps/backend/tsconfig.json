@@ -34,6 +34,12 @@
       "@app/domain/*": [
         "libs/domain/src/*"
       ],
+      "@app/messaging": [
+        "libs/messaging/src"
+      ],
+      "@app/messaging/*": [
+        "libs/messaging/src/*"
+      ],
       "@app/data": [
         "libs/data/src"
       ],

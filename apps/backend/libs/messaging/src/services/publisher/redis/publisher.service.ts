@@ -1,5 +1,7 @@
-import { IPublisher } from '@app/domain/messeging';
-import { Message } from '@app/domain/messeging/types';
+import { IPublisher, Message } from '@app/messaging/domain';
+
+
+
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import Redis from 'ioredis';
 import { Observer, Subscription } from 'rxjs';

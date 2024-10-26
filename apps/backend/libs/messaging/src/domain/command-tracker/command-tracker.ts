@@ -30,12 +30,8 @@ export class CommandTracker {
     return item.value;
   }
 
-  async isActive<T>(correlationId: string) {
-    const item = await this.cache.get<CacheItem<T>>(correlationId);
-    return (
-      !!item &&
-      Date.now() - item.date.getTime() < this.config.CACHE_TTL_SECONDS * 1000
-    );
+  async isActive(correlationId: string) {
+    return await this.cache.hasKey(correlationId);
   }
 
   stopTracking(correlationId: string): void {

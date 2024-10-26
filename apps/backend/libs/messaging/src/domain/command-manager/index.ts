@@ -3,10 +3,10 @@ import { Config, IPublisher, Message } from '../types';
 import { CommandResult } from './types';
 
 export class CommandManager<TCmd, TResult> {
-  constructor(
-    private publisher: IPublisher,
-    private tracker: CommandTracker,
-    private config: Config,
+  public constructor(
+    protected publisher: IPublisher,
+    protected tracker: CommandTracker,
+    protected config: Config,
   ) { }
 
   publishCmd(correlationId: string, cmd: TCmd, track = true) {
