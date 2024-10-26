@@ -1,25 +1,25 @@
 type NotFound = { type: 'not-found' };
 type StillPending = { type: 'still-pending' };
-type Completed = { type: 'completed'; result: unknown };
-type CompletedMultiple = {
+type Completed<T> = { type: 'completed'; result: T };
+type CompletedMultiple<T> = {
   type: 'completed-multiple';
-  results: unknown[];
+  results: T[];
 };
 
-export type CommandResult =
+export type CommandResult<T> =
   | NotFound
   | StillPending
-  | Completed
-  | CompletedMultiple;
+  | Completed<T>
+  | CompletedMultiple<T>;
 
 export const CommandResult = {
   NotFound: (): NotFound => ({ type: 'not-found' }),
   StillPending: (): StillPending => ({ type: 'still-pending' }),
-  Completed: (result: unknown): Completed => ({
+  Completed: <T>(result: T): Completed<T> => ({
     type: 'completed',
     result,
   }),
-  CompletedMultiple: (results: unknown[]): CompletedMultiple => ({
+  CompletedMultiple: <T>(results: T[]): CompletedMultiple<T> => ({
     type: 'completed-multiple',
     results,
   }),

@@ -1,4 +1,4 @@
-import { ICache } from '../types';
+import { ICache } from "../../../types";
 
 export class InMemoryCache implements ICache {
   private cache: Map<string, unknown> = new Map();
@@ -7,15 +7,15 @@ export class InMemoryCache implements ICache {
     return this.cache.get(key) as T;
   }
 
-  set(key: string, value: unknown): void {
+  async set(key: string, value: unknown) {
     this.cache.set(key, value);
   }
 
-  del(key: string): void {
+  async del(key: string) {
     this.cache.delete(key);
   }
 
-  hasKey(key: string): boolean {
+  async hasKey(key: string) {
     return this.cache.has(key);
   }
 }
