@@ -1,22 +1,10 @@
 import { Module } from '@nestjs/common';
-import { RedisCache } from './services/cache';
-import { RedisPublisher } from './services/publisher';
 import { NewSessionManager } from './services/new-session/manager';
-import { NewSessionListener } from './services/new-session/listener';
-
-// restart
-@Module({
-  providers: [RedisCache, RedisPublisher, NewSessionManager],
-  exports: [RedisCache, RedisPublisher, NewSessionManager],
-})
-export class MessagingModule { }
-
+import { MessagingRedisModule } from './redis';
 
 @Module({
-  imports: [
-    MessagingModule
-  ],
-  providers: [NewSessionListener],
-  exports: [NewSessionListener],
+  imports: [MessagingRedisModule],
+  providers: [NewSessionManager],
+  exports: [NewSessionManager],
 })
-export class ConsumerModule { }
+export class MessagingModule {}
