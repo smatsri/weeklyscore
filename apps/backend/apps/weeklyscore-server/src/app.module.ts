@@ -8,7 +8,7 @@ import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
 import { MessagingModule } from '@app/messaging';
-import { NewSessionManager } from './temp/t1';
+import { NewSessionManager } from '@app/messaging/services/managers/new-session';
 
 @Module({
   imports: [
@@ -31,11 +31,9 @@ import { NewSessionManager } from './temp/t1';
     }),
     DataModule,
     PostgraphileModule,
-    MessagingModule
+    MessagingModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService, NewSessionManager
-  ],
+  providers: [AppService, NewSessionManager],
 })
-export class AppModule { }
+export class AppModule {}

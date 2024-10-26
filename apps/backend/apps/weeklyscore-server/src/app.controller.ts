@@ -2,14 +2,14 @@ import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FirebaseAuthGuard } from '@app/authentication';
 import { Request } from 'express';
-import { NewSessionManager } from './temp/t1';
+import { NewSessionManager } from '@app/messaging/services/managers/new-session';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly newSessionManager: NewSessionManager,
-  ) { }
+  ) {}
 
   @Get()
   getHello(): string {
@@ -30,7 +30,7 @@ export class AppController {
   @Get('new-session/test')
   newSessionTest() {
     const correlationId = `test-${new Date().getTime()}`;
-    this.newSessionManager.publishCmd(correlationId, 'whats up?')
+    this.newSessionManager.publishCmd(correlationId, 'whats up?');
 
     return { correlationId };
   }
@@ -51,5 +51,4 @@ export class AppController {
     await this.newSessionManager.publishResult(request.params.id, value);
     return response.sendStatus(200);
   }
-
 }
