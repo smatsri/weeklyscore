@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CommandManager } from '@app/messaging';
-import { Config } from '@app/messaging/domain';
+
+import { CommandManager, Config } from '@app/messaging/domain';
 import { CommandTracker } from '@app/messaging/domain/command-tracker/command-tracker';
-import { RedisCache } from '@app/messaging/services/cache';
-import { RedisPublisher } from '@app/messaging/services/publisher';
+import { RedisCache } from '../cache/redis';
+import { RedisPublisher } from '../publisher';
 
 type Command = string;
 type Result = number;
