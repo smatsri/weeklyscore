@@ -2,14 +2,14 @@ import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FirebaseAuthGuard } from '@app/authentication';
 import { Request } from 'express';
-import { NewSessionManager } from '@app/messaging/services/managers/new-session';
+import { NewSessionManager } from '@app/messaging/services/new-session/manager';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly newSessionManager: NewSessionManager,
-  ) {}
+  ) { }
 
   @Get()
   getHello(): string {

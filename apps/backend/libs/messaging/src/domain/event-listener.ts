@@ -2,7 +2,7 @@ import { CommandTracker } from './command-tracker/command-tracker';
 import { Config, IPublisher, Message } from './types';
 import { CallOnlyOnce } from './utils';
 
-export class EventListener implements Disposable {
+export abstract class EventListener implements Disposable {
   private readonly _dispose: () => void;
 
   constructor(

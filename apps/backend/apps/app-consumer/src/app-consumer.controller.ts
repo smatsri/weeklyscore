@@ -1,11 +1,13 @@
 import { TestEvent } from '@app/domain/events';
-import { config } from '@app/messaging/config';
+import { NewSessionManager } from '@app/messaging/services/new-session/manager';
 import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 
 @Controller()
 export class AppConsumerController {
-  constructor() { }
+  constructor(
+    private readonly manager: NewSessionManager
+  ) { }
 
   @EventPattern('test_consumer')
   getHello(data: TestEvent) {
@@ -15,5 +17,6 @@ export class AppConsumerController {
   @EventPattern('command-topic')
   handleCommand(data: any) {
     console.log('handleCommand called', data);
+    this.manager.publishResult(data.headers.correlationId, 73);
   }
 }
