@@ -1,4 +1,4 @@
-import { Config } from "./domain";
+import { Config } from "./core";
 
 export const config: Config = {
   COMMAND_TOPIC: 'command-topic',

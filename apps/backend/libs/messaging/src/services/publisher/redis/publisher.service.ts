@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
 import { Observer, Subscription } from 'rxjs';
-import { IPublisher, Message } from '@app/messaging/domain';
+import { IPublisher, Message } from '@app/messaging/core';
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { RedisSubscriptionManager } from './subscribe-manager';
 

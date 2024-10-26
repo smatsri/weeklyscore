@@ -1,7 +1,7 @@
-import { EventListener } from "@app/messaging/domain";
+import { EventListener } from "@app/messaging/core";
 import { RedisPublisher } from "../publisher";
 import { RedisCache } from "../cache";
-import { CommandTracker } from "@app/messaging/domain/command-tracker/command-tracker";
+import { CommandTracker } from "@app/messaging/core/command-tracker/command-tracker";
 import { config } from "@app/messaging/config";
 import { Injectable } from "@nestjs/common";
 
