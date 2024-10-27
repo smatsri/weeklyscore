@@ -1,31 +1,23 @@
-import { Observer, Subscription } from 'rxjs';
+import { Observable, Observer, Subscription } from 'rxjs';
 
-export type Timed<T> = {
-  date: Date;
-  value: T;
-};
-
-export const Timed = {
-  getValue: <T>(value: Timed<T>): T => value.value,
-};
 
 export type Config = {
   COMMAND_TOPIC: string;
   EVENT_TOPIC: string;
   DEAD_LETTERS_TOPIC: string;
-  CACHE_TTL_SECONDS: number;
+  CACHE_TTL: number;
 };
 
 export type Message<T> = {
-  headers: {
-    correlationId: string;
-  };
+  msgId: string;
   payload: T;
+  headers: Record<string, string>;
 };
 
-export function Message<T>(correlationId: string, payload: T): Message<T> {
+export function Message<T>(msgId: string, payload: T, headers: Record<string, string> = {}): Message<T> {
   return {
-    headers: { correlationId },
+    msgId,
+    headers,
     payload,
   };
 }
@@ -33,6 +25,7 @@ export function Message<T>(correlationId: string, payload: T): Message<T> {
 export interface IPublisher {
   publish<T>(topic: string, message: Message<T>): void;
   subscribe<T>(topic: string, obs: Observer<Message<T>>): Subscription;
+  getEvents<T>(topic: string): Observable<Message<T>>;
 }
 
 type TrackPending = { type: 'track-pending' };

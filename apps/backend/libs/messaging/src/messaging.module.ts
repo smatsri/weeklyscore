@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { NewSessionManager } from './services/new-session/manager';
+import { NewSessionManager } from './new-session/manager';
 import { MessagingRedisModule } from './redis';
 
 @Module({
@@ -7,4 +7,4 @@ import { MessagingRedisModule } from './redis';
   providers: [NewSessionManager],
   exports: [NewSessionManager],
 })
-export class MessagingModule {}
+export class MessagingModule { }

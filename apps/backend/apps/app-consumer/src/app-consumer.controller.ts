@@ -1,5 +1,5 @@
-import { TestEvent } from '@app/domain/events';
-import { NewSessionManager } from '@app/messaging/services/new-session/manager';
+import { TestEvent } from '@app/domain/new-session';
+import { NewSessionManager } from '@app/messaging/new-session/manager';
 import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 

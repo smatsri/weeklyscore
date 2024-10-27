@@ -1,4 +1,4 @@
-import { TestEvent } from '@app/domain/events';
+import { TestEvent } from '@app/domain/new-session';
 import { Injectable } from '@nestjs/common';
 import {
   ClientProxy,

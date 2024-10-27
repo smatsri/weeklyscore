@@ -1,16 +1,14 @@
 import { Injectable } from '@nestjs/common';
-
 import { CommandManager, Config } from '@app/messaging/core';
 import { CommandTracker } from '@app/messaging/core/command-tracker/command-tracker';
-import { RedisCache } from '../cache/redis';
-import { RedisPublisher } from '../publisher';
-import { config } from '@app/messaging/config';
+import { RedisPublisher } from '@app/messaging/redis/publisher.service';
+import { RedisCache } from '@app/messaging/redis/cache.service';
+import { config } from '@app/messaging/new-session/config';
+import { Command, Event } from '@app/domain/new-session';
 
-type Command = string;
-type Result = number;
 
 @Injectable()
-export class NewSessionManager extends CommandManager<Command, Result> {
+export class NewSessionManager extends CommandManager<Command, Event> {
   constructor(publisher: RedisPublisher, cache: RedisCache) {
 
     const tracker = new CommandTracker(cache, config);

@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export class RedisSubscriptionManager {
   private subscriber: Redis;
@@ -12,7 +12,7 @@ export class RedisSubscriptionManager {
     });
   }
 
-  subscribe<T>(channel: string): Subject<T> {
+  subscribe<T>(channel: string) {
     if (!this.subjects.has(channel)) {
       const subject = new Subject<T>();
       this.subjects.set(channel, subject);
@@ -26,7 +26,8 @@ export class RedisSubscriptionManager {
       });
     }
 
-    return this.subjects.get(channel)!;
+    const subject: Subject<T> = this.subjects.get(channel)!;
+    return subject.asObservable();
   }
 
   unsubscribe(channel: string): void {
