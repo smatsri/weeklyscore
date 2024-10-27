@@ -1,7 +1,7 @@
 import { CommandManager } from "..";
 import { InMemoryCache } from "./mocks/cache";
 import { CommandTracker } from "../../command-tracker/command-tracker";
-import { config } from "@app/messaging/config";
+import { config } from "@app/messaging/new-session/config";
 import { TestPublisher } from "./mocks/publisher";
 import { CommandResult } from "../types";
 

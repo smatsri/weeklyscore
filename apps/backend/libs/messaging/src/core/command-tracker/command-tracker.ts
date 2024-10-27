@@ -39,6 +39,6 @@ export class CommandTracker {
   }
 
   private setItem<T>(correlationId: string, item: CacheItem<T>): void {
-    this.cache.set(correlationId, item, this.config.CACHE_TTL_SECONDS * 1000);
+    this.cache.set(correlationId, item, this.config.CACHE_TTL);
   }
 }

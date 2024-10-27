@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
-import { Observer, Subscription } from 'rxjs';
-import { IPublisher, Message } from '@app/messaging/domain';
+import { Observable, Observer, Subscription } from 'rxjs';
+import { IPublisher, Message } from '@app/messaging/core';
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { RedisSubscriptionManager } from './subscribe-manager';
 
@@ -27,9 +27,13 @@ export class RedisPublisher implements IPublisher, OnModuleDestroy {
   }
 
   subscribe<T>(topic: string, obs: Observer<Message<T>>): Subscription {
-    const a = this.subManager.subscribe(topic);
     return this.subManager.subscribe(topic).subscribe(obs);
   }
+
+  getEvents<T>(topic: string) {
+    return this.subManager.subscribe<T>(topic)
+  }
+
 
   onModuleDestroy() {
     this.subManager.quit();
