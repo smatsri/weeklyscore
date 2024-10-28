@@ -1,2 +1,2 @@
-export { CommandManager } from './core';
-export * from './messaging.module';
+export * from './core';
+

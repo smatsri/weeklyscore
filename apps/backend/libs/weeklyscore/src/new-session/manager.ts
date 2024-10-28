@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CommandManager, Config } from '@app/messaging/core';
-import { CommandTracker } from '@app/messaging/core/command-tracker/command-tracker';
+import { CommandManager, Config, CommandTracker } from '@app/messaging';
 import { RedisPublisher } from '@app/messaging/redis/publisher.service';
 import { RedisCache } from '@app/messaging/redis/cache.service';
-import { config } from '@app/messaging/new-session/config';
-import { Command, Event } from '@app/domain/new-session';
+import { config } from './config';
+import { Command, Event } from './messages';
 
 
 @Injectable()

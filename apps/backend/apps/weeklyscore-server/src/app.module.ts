@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
-import { MessagingModule } from '@app/messaging';
+import { NewSessionModule } from '@app/weeklyscore/new-session';
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ import { MessagingModule } from '@app/messaging';
     }),
     DataModule,
     PostgraphileModule,
-    MessagingModule,
+    NewSessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
