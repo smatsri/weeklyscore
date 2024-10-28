@@ -1,4 +1,4 @@
-import { Config } from "../core";
+import { Config } from "@app/messaging";
 
 export const config: Config = {
   COMMAND_TOPIC: 'command-topic',

@@ -1,6 +1,6 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import Redis from 'ioredis';
-import { ICache } from '../core';
+import { ICache } from '@app/messaging';
 
 @Injectable()
 export class RedisCache implements ICache, OnModuleInit, OnModuleDestroy {

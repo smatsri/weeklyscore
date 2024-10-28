@@ -1,4 +1,4 @@
-import { TestEvent } from '@app/domain/new-session';
+
 import { Injectable } from '@nestjs/common';
 import {
   ClientProxy,
@@ -26,7 +26,7 @@ export class AppService {
   }
 
   async publishTestEvent() {
-    const evt: TestEvent = { message: 'test ' + this.couter++ };
+    const evt = { message: 'test ' + this.couter++ };
     console.debug('publishTestEvent called', evt);
     this.client.emit('test_consumer', evt);
   }

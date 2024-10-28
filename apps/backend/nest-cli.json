@@ -4,7 +4,8 @@
   "sourceRoot": "apps/weeklyscore-server/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "tsConfigPath": "apps/weeklyscore-server/tsconfig.app.json"
+    "tsConfigPath": "apps/weeklyscore-server/tsconfig.app.json",
+    "webpack": false
   },
   "projects": {
     "authentication": {
@@ -68,6 +69,15 @@
       "sourceRoot": "apps/app-consumer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/app-consumer/tsconfig.app.json"
+      }
+    },
+    "weeklyscore": {
+      "type": "library",
+      "root": "libs/weeklyscore",
+      "entryFile": "index",
+      "sourceRoot": "libs/weeklyscore/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/weeklyscore/tsconfig.lib.json"
       }
     }
   },

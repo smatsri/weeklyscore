@@ -51,6 +51,12 @@
       ],
       "@app/postgraphile/*": [
         "libs/postgraphile/src/*"
+      ],
+      "@app/weeklyscore": [
+        "libs/weeklyscore/src"
+      ],
+      "@app/weeklyscore/*": [
+        "libs/weeklyscore/src/*"
       ]
     }
   }
