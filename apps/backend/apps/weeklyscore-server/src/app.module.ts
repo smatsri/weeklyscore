@@ -8,6 +8,7 @@ import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
 import { NewSessionModule } from '@app/weeklyscore/new-session';
+import { WsModule } from './ws';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { NewSessionModule } from '@app/weeklyscore/new-session';
     DataModule,
     PostgraphileModule,
     NewSessionModule,
+    WsModule
   ],
   controllers: [AppController],
   providers: [AppService],
