@@ -8,8 +8,9 @@ import {
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
-  namespace: 'events',
-
+  cors: {
+    origin: '*',
+  },
 })
 export class WSGateway {
   @WebSocketServer()
