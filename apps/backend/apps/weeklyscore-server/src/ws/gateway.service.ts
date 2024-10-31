@@ -1,56 +1,56 @@
 import {
   WebSocketGateway,
   WebSocketServer,
-  SubscribeMessage,
-  ConnectedSocket,
   OnGatewayDisconnect,
-  MessageBody,
+  OnGatewayInit,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { RedisService } from './redis.service';
 import { Session } from './session.class';
-import * as jwt from 'jsonwebtoken';
+import { RedisService } from './redis.service';
+import { FirebaseAuthService } from '@app/authentication';
+import { Redis } from 'ioredis';
 
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
-export class WSGateway implements OnGatewayDisconnect {
+export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
   @WebSocketServer()
   server: Server;
+  redis: Redis;
+  constructor(private readonly auth: FirebaseAuthService) {}
+
+  afterInit(server: any) {
+    this.redis = new Redis('redis://localhost:6379');
+  }
 
   private sessions: Map<string, Session> = new Map();
 
-  constructor(private readonly redisService: RedisService) {}
-
-  handleConnection(client: Socket) {
-    const userId = this.extractUserId(client);
+  async handleConnection(client: Socket) {
+    console.log(`Client connected: ${client.id}`);
+    const userId = await this.extractUserId(client);
     if (userId) {
-      const session = new Session(userId, client, this.redisService);
-      this.sessions.set(userId, session);
-      client.join(userId);
+      const redis = new RedisService(this.redis);
+      const session = new Session(userId, client, redis);
+      this.sessions.set(client.id, session);
     }
   }
 
-  handleDisconnect(client: Socket) {
-    const userId = this.extractUserId(client);
-    if (userId) {
-      const session = this.sessions.get(userId);
-      if (session) {
-        session.cleanup();
-        this.sessions.delete(userId);
-      }
-      client.leave(userId);
-      console.log(`Client disconnected: ${client.id}`);
+  async handleDisconnect(client: Socket) {
+    console.log(`Client disconnected: ${client.id}`);
+    const session = this.sessions.get(client.id);
+    if (session) {
+      await session.cleanup();
+      this.sessions.delete(client.id);
     }
   }
 
-  private extractUserId(client: Socket): string {
-    const token = client.handshake.headers.authorization?.split(' ')[1];
+  private async extractUserId(client: Socket) {
+    const token = client.handshake.auth.token;
     if (token) {
       try {
-        const payload = jwt.verify(token, 'YOUR_SECRET_KEY') as any;
+        const payload = await this.auth.verifyToken(token);
         return payload.sub;
       } catch (err) {
         console.error('Invalid token', err);

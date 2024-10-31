@@ -7,30 +7,28 @@ export class Session {
     private readonly socket: Socket,
     private readonly redisService: RedisService,
   ) {
+    console.log(`Session created for user: ${userId}`);
     this.initSubscription();
   }
 
   private async initSubscription() {
     this.socket.on('message', (message) => {
-      this.handleMessage(message);
+      console.log(`Received message from user: ${this.userId}`);
+      this.redisService.publish(`command.${this.userId}`, message);
     });
 
-    await this.redisService.subscribe(`events.${this.userId}_*`, (message) => {
+    await this.redisService.subscribe(`event.${this.userId}`, (message) => {
+      console.log(`Sending message to user: ${this.userId}`);
       this.socket.emit('message', message);
     });
   }
 
-  handleMessage(message: string) {
-    this.redisService.publish(`command.${this.userId}`, message);
-  }
-
   async cleanup() {
+    console.log(`Cleaning up session for user: ${this.userId}`);
     try {
       await this.redisService.unsubscribe(`events.${this.userId}`);
-      this.redisService.quit();
       this.socket.disconnect();
     } catch (error) {
-      // write error to log
       console.error(error);
     }
   }
