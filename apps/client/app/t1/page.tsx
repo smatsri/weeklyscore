@@ -44,13 +44,17 @@ const T1Page: React.FC = () => {
 
   const sendMessage = () => {
     if (message) {
-      const command: CreateSession = {
+      const command = {
         type: "create-session",
         payload: {
           groupId: "123",
         },
       };
-      socket.emit("message", command);
+      try {
+        socket.emit("message", command);
+      } catch (error) {
+        console.log("Error sending message: ", error);
+      }
     }
   };
 

@@ -16,8 +16,7 @@ export class Session {
       console.log(`Received message from user: ${this.userId}`);
       const valRes = CommandSchema.safeParse(message);
       if (!valRes.success) {
-        console.error(valRes.error);
-        this.socket.emit('message', 'Invalid message');
+        console.error('Invalid message received: ', valRes.error.message);
       } else {
         this.redisService.publish(`command.${this.userId}`, message);
       }
