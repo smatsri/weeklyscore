@@ -1,6 +1,6 @@
 "use client";
 import { useFirebaseContext } from "@/components/Firebase/FirebaseProvider";
-// pages/chat.tsx
+import { CreateSession } from "@weeklyscore/schema";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
@@ -44,7 +44,17 @@ const T1Page: React.FC = () => {
 
   const sendMessage = () => {
     if (message) {
-      socket.emit("message", message);
+      const command = {
+        type: "create-session",
+        payload: {
+          groupId: "123",
+        },
+      };
+      try {
+        socket.emit("message", command);
+      } catch (error) {
+        console.log("Error sending message: ", error);
+      }
     }
   };
 

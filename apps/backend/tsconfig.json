@@ -17,47 +17,21 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ],
+
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "paths": {
-      "@app/authentication": [
-        "libs/authentication/src"
-      ],
-      "@app/authentication/*": [
-        "libs/authentication/src/*"
-      ],
-      "@app/domain": [
-        "libs/domain/src"
-      ],
-      "@app/domain/*": [
-        "libs/domain/src/*"
-      ],
-      "@app/messaging": [
-        "libs/messaging/src"
-      ],
-      "@app/messaging/*": [
-        "libs/messaging/src/*"
-      ],
-      "@app/data": [
-        "libs/data/src"
-      ],
-      "@app/data/*": [
-        "libs/data/src/*"
-      ],
-      "@app/postgraphile": [
-        "libs/postgraphile/src"
-      ],
-      "@app/postgraphile/*": [
-        "libs/postgraphile/src/*"
-      ],
-      "@app/weeklyscore": [
-        "libs/weeklyscore/src"
-      ],
-      "@app/weeklyscore/*": [
-        "libs/weeklyscore/src/*"
-      ]
+      "@app/authentication": ["libs/authentication/src"],
+      "@app/authentication/*": ["libs/authentication/src/*"],
+      "@app/domain": ["libs/domain/src"],
+      "@app/domain/*": ["libs/domain/src/*"],
+      "@app/messaging": ["libs/messaging/src"],
+      "@app/messaging/*": ["libs/messaging/src/*"],
+      "@app/data": ["libs/data/src"],
+      "@app/data/*": ["libs/data/src/*"],
+      "@app/postgraphile": ["libs/postgraphile/src"],
+      "@app/postgraphile/*": ["libs/postgraphile/src/*"],
+      "@app/weeklyscore": ["libs/weeklyscore/src"],
+      "@app/weeklyscore/*": ["libs/weeklyscore/src/*"]
     }
   }
 }
