@@ -1,22 +1,25 @@
-import { TestEvent } from '@app/domain/new-session';
-import { NewSessionManager } from '@app/messaging/new-session/manager';
+import { NewSessionManager } from '@app/weeklyscore/new-session';
 import { Controller } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { EventPattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
+import Redis from 'ioredis';
 
 @Controller()
 export class AppConsumerController {
-  constructor(
-    private readonly manager: NewSessionManager
-  ) { }
-
-  @EventPattern('test_consumer')
-  getHello(data: TestEvent) {
-    console.debug('test_consumer called', data.message);
+  private readonly redis: Redis;
+  constructor() {
+    this.redis = new Redis({
+      host: 'localhost',
+      port: 6379,
+    });
   }
 
-  @EventPattern('command-topic')
-  handleCommand(data: any) {
+  @EventPattern('commands.*')
+  handleCommand(@Payload() data: any, @Ctx() context: RmqContext) {
+    const pattern = context.getPattern();
+    const sessionId = pattern.split('.')[1]; // Extract session-id from the topic name
+
     console.log('handleCommand called', data);
-    this.manager.publishResult(data.headers.correlationId, 73);
+    console.log('Session ID:', sessionId);
+    this.redis.publish(`events.${sessionId}`, JSON.stringify(data));
   }
 }
