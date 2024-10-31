@@ -1,0 +1,27 @@
+import { Controller, Injectable } from '@nestjs/common';
+import { Redis } from 'ioredis';
+
+@Injectable()
+export class AppConsumerService {
+  async start() {
+    console.log('App consumer started');
+    const redis = new Redis('redis://localhost:6379');
+    const subscriber = new Redis('redis://localhost:6379');
+    redis.on('connect', () => {
+      console.log('Connected to Redis');
+    });
+    redis.on('error', (error) => {
+      console.error('Redis connection error:', error);
+    });
+
+    await subscriber.psubscribe('command.*');
+
+    subscriber.on('pmessage', (pattern, channel, message) => {
+      const [command, sessionId] = channel.split('.');
+      console.log(
+        `Received message from pattern ${pattern} on channel ${channel}: ${message}`,
+      );
+      redis.publish(`event.${sessionId}`, `handled: ${message}`);
+    });
+  }
+}

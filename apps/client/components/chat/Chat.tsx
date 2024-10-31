@@ -19,6 +19,10 @@ const Chat: React.FC = () => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
 
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
     return () => {
       socket.disconnect();
     };

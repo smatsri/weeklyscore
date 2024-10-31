@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { WSGateway } from './gateway.service';
+import { MessageService } from './message.service';
+import { AuthenticationModule } from '@app/authentication';
 
 @Module({
-  providers: [WSGateway],
+  imports: [AuthenticationModule],
+  providers: [WSGateway, MessageService],
   exports: [],
 })
-export class WsModule { }
+export class WsModule {}
