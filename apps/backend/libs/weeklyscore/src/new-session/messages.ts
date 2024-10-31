@@ -1,50 +1,73 @@
-type CreateSession = {
-  type: 'create-session'
-  payload: {
-    groupId: string
-  }
-}
+import { z } from 'zod';
 
-type AddPlayer = {
-  type: 'add-player'
-  payload: {
-    name: string
-  }
-}
+const CreateSessionSchema = z.object({
+  type: z.literal('create-session'),
+  payload: z.object({
+    groupId: z.string(),
+  }),
+});
 
-type AddBuyin = {
-  type: 'add-buyin'
-  payload: {
-    sessionId: string
-    playerId: string
-    amount: number
-  }
-}
+const AddPlayerSchema = z.object({
+  type: z.literal('add-player'),
+  payload: z.object({
+    name: z.string(),
+  }),
+});
 
-export type Command = CreateSession | AddPlayer | AddBuyin
+const AddBuyinSchema = z.object({
+  type: z.literal('add-buyin'),
+  payload: z.object({
+    sessionId: z.string(),
+    playerId: z.string(),
+    amount: z.number(),
+  }),
+});
 
-type SessionCreated = {
-  type: 'session-created',
-  payload: {
-    sessionId: string
-  }
-}
+export const CommandSchema = z.union([
+  CreateSessionSchema,
+  AddPlayerSchema,
+  AddBuyinSchema,
+]);
 
-type PlayerAdded = {
-  type: 'player-added',
-  payload: {
-    playerName: string
-    playerId: string
-  }
-}
+export type CreateSession = z.infer<typeof CreateSessionSchema>;
+export type AddPlayer = z.infer<typeof AddPlayerSchema>;
+export type AddBuyin = z.infer<typeof AddBuyinSchema>;
+export type Command = z.infer<typeof CommandSchema>;
 
-type BuyinAdded = {
-  type: 'buyin-added',
-  payload: {
-    sessionId: string
-    playerId: string
-    amount: number
-  }
-}
+// Define Event schemas
+const SessionCreatedSchema = z.object({
+  type: z.literal('session-created'),
+  payload: z.object({
+    sessionId: z.string(),
+    groupId: z.string(),
+  }),
+});
 
-export type Event = SessionCreated | PlayerAdded | BuyinAdded
+const PlayerAddedSchema = z.object({
+  type: z.literal('player-added'),
+  payload: z.object({
+    playerId: z.string(),
+    name: z.string(),
+  }),
+});
+
+const BuyinAddedSchema = z.object({
+  type: z.literal('buyin-added'),
+  payload: z.object({
+    buyinId: z.string(),
+    sessionId: z.string(),
+    playerId: z.string(),
+    amount: z.number(),
+  }),
+});
+
+export const EventSchema = z.union([
+  SessionCreatedSchema,
+  PlayerAddedSchema,
+  BuyinAddedSchema,
+]);
+
+export type SessionCreated = z.infer<typeof SessionCreatedSchema>;
+export type PlayerAdded = z.infer<typeof PlayerAddedSchema>;
+export type BuyinAdded = z.infer<typeof BuyinAddedSchema>;
+export type Event = z.infer<typeof EventSchema>;
