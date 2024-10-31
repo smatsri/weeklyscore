@@ -26,15 +26,6 @@
         "tsConfigPath": "libs/domain/tsconfig.lib.json"
       }
     },
-    "messaging": {
-      "type": "library",
-      "root": "libs/messaging",
-      "entryFile": "index",
-      "sourceRoot": "libs/messaging/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/domain/tsconfig.lib.json"
-      }
-    },
     "data": {
       "type": "library",
       "root": "libs/data",
@@ -69,15 +60,6 @@
       "sourceRoot": "apps/app-consumer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/app-consumer/tsconfig.app.json"
-      }
-    },
-    "weeklyscore": {
-      "type": "library",
-      "root": "libs/weeklyscore",
-      "entryFile": "index",
-      "sourceRoot": "libs/weeklyscore/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/weeklyscore/tsconfig.lib.json"
       }
     }
   },
