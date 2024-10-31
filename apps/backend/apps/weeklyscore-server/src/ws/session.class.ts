@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io';
 import { RedisService } from './redis.service';
-
+import { CommandSchema } from '@weeklyscore/schema';
 export class Session {
   constructor(
     private readonly userId: string,
@@ -14,7 +14,13 @@ export class Session {
   private async initSubscription() {
     this.socket.on('message', (message) => {
       console.log(`Received message from user: ${this.userId}`);
-      this.redisService.publish(`command.${this.userId}`, message);
+      const valRes = CommandSchema.safeParse(message);
+      if (!valRes.success) {
+        console.error(valRes.error);
+        this.socket.emit('message', 'Invalid message');
+      } else {
+        this.redisService.publish(`command.${this.userId}`, message);
+      }
     });
 
     await this.redisService.subscribe(`event.${this.userId}`, (message) => {
