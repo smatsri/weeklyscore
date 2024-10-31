@@ -1,2 +1,1 @@
-export * from './new-session.module';
-export { NewSessionManager } from './manager';
+export * from './messages';

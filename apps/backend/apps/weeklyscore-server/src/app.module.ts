@@ -2,12 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthenticationModule } from '@app/authentication';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
-import { NewSessionModule } from '@app/weeklyscore/new-session';
 import { WsModule } from './ws';
 
 @Module({
@@ -31,10 +29,9 @@ import { WsModule } from './ws';
     }),
     DataModule,
     PostgraphileModule,
-    NewSessionModule,
-    WsModule
+    WsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
-export class AppModule { }
+export class AppModule {}
