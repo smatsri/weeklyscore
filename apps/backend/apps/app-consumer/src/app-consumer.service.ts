@@ -17,7 +17,7 @@ export class AppConsumerService {
     await subscriber.psubscribe('command.*');
 
     subscriber.on('pmessage', (pattern, channel, message) => {
-      const [command, sessionId] = channel.split('.');
+      const [, sessionId] = channel.split('.');
       console.log(
         `Received message from pattern ${pattern} on channel ${channel}: ${message}`,
       );
