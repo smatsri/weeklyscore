@@ -1,0 +1,1 @@
+const Que = 1;

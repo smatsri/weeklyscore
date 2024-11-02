@@ -74,4 +74,58 @@ END;
 $BODY$;
 
 
+-- FUNCTION: public.get_group_players(integer)
+
+-- DROP FUNCTION IF EXISTS public.get_group_players(integer);
+
+CREATE OR REPLACE FUNCTION public.get_group_players(
+	groupid integer)
+    RETURNS TABLE(id uuid, name character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    STABLE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+    RETURN QUERY
+	SELECT p.id, p.name
+	FROM weeklyscore.player p;
+END;
+$BODY$;
+
+ALTER FUNCTION public.get_group_players(integer)
+    OWNER TO myuser;
+
+-- FUNCTION: public.get_session_buyins(uuid)
+
+-- DROP FUNCTION IF EXISTS public.get_session_buyins(uuid);
+
+CREATE OR REPLACE FUNCTION public.get_session_buyins(
+	session_id uuid)
+    RETURNS TABLE(id uuid, date timestamp without time zone, amount numeric, player_id uuid, player_name character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    STABLE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT b.id,
+           b.created_at AS date,
+           b.amount,
+           p.id AS player_id,
+           p.name AS player_name
+    FROM weeklyscore.buyin AS b
+    JOIN weeklyscore.player AS p ON b.player_id = p.id
+    WHERE b.play_session_id = session_id
+    ORDER BY b.created_at DESC;
+END;
+$BODY$;
+
+ALTER FUNCTION public.get_session_buyins(uuid)
+    OWNER TO myuser;
+
+
 

@@ -23,11 +23,13 @@ export type ApiResponse = {
   success: boolean;
 };
 
+type Unsubscribe = () => void;
+
 export type Api = {
   publish: (cmd: Command) => Promise<ApiResponse>;
   getPlayers: () => Promise<Player[]>;
   getBuyins: () => Promise<Buyin[]>;
-  subscribe: (callback: (event: Event) => void) => () => void;
+  subscribe: (callback: (event: Event) => void) => Unsubscribe;
 };
 
 export const useNewSession = (api: Api) => {
