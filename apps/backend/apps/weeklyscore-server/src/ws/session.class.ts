@@ -14,7 +14,8 @@ export class Session {
   private async initSubscription() {
     this.socket.on('message', (message) => {
       console.log(`Received message from user: ${this.userId}`);
-      const valRes = CommandSchema.safeParse(message);
+      const data = JSON.parse(message);
+      const valRes = CommandSchema.safeParse(data);
       if (!valRes.success) {
         console.error('Invalid message received: ', valRes.error.message);
       } else {

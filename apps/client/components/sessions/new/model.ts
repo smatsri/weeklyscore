@@ -32,15 +32,10 @@ export type Api = {
   subscribe: (callback: (event: Event) => void) => Unsubscribe;
 };
 
-export const useNewSession = (api: Api) => {
-  const [sessionId, setSessionId] = useState<string | null>(null);
+export const useNewSession = (sessionId: string, api: Api) => {
   const [loading, setLoading] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
   const [buyins, setBuyins] = useState<Buyin[]>([]);
-
-  const handleSessionCreated = useCallback((event: SessionCreated) => {
-    setSessionId(event.payload.sessionId);
-  }, []);
 
   const handlePlayerAdded = useCallback((event: PlayerAdded) => {
     const player: Player = {
@@ -78,8 +73,6 @@ export const useNewSession = (api: Api) => {
           return handlePlayerAdded(event);
         case "buyin-added":
           return handleBuyinAdded(event);
-        case "session-created":
-          return handleSessionCreated(event);
       }
     },
     [players]
@@ -116,7 +109,7 @@ export const useNewSession = (api: Api) => {
     async (playerId: string, amount: number) => {
       const cmd: Command = {
         type: "add-buyin",
-        payload: { sessionId: sessionId!, playerId, amount },
+        payload: { sessionId: sessionId, playerId, amount },
       };
       const res = await api.publish(cmd);
       return res.success;

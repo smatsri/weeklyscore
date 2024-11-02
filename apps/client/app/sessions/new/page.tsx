@@ -11,7 +11,9 @@ const NewSessionPage = () => {
   if (api.ready === false) {
     return <div>Loading...</div>;
   }
-  return <NewSession api={api} />;
+  return (
+    <NewSession api={api} sessionId="fe53d46e-6544-4de2-a080-44ffd4eb858b" />
+  );
 };
 
 export default NewSessionPage;

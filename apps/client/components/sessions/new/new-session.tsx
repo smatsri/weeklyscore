@@ -10,9 +10,13 @@ import { Buttons } from "./buttons";
 
 type Props = {
   api: Api;
+  sessionId: string;
 };
-const NewSession = ({ api }: Props) => {
-  const { addBuyin, addPlayer, buyins, players } = useNewSession(api);
+const NewSession = ({ api, sessionId }: Props) => {
+  const { addBuyin, addPlayer, buyins, players } = useNewSession(
+    sessionId,
+    api
+  );
   return (
     <Layout>
       <Title title="סשיין חדש" />

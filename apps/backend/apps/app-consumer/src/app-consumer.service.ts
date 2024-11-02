@@ -21,7 +21,13 @@ export class AppConsumerService {
       console.log(
         `Received message from pattern ${pattern} on channel ${channel}: ${message}`,
       );
-      redis.publish(`event.${sessionId}`, `handled: ${message}`);
+
+      const response = JSON.stringify({
+        success: true,
+        data: 'not implemented',
+      });
+
+      redis.publish(`event.${sessionId}`, response);
     });
   }
 }
