@@ -3,10 +3,9 @@
 import BuyinTable from "@/components/sessions/new/buyin-table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Title, Layout, Main } from "./layout";
-import { Api, useNewSession } from "./model";
-import { Buttons } from "./buttons";
 
-// Mock data for users and amounts
+import { Buttons } from "./buttons";
+import { Api, useNewSession } from "@/lib/session";
 
 type Props = {
   api: Api;

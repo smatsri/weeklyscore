@@ -1,15 +1,13 @@
-import { Api } from "@/components/sessions/new/model";
 import { Command, Event } from "@weeklyscore/schema";
 
 import useWS from "../ws/ws.hook";
-import { useApi } from "./api";
-import { useState } from "react";
+import { useApi } from "./api.hook";
+import { Api } from "./types";
 
-export const useSession = (
+export const useSessionApi = (
   sessionId: string,
   groupId: string
 ): Api & { ready: boolean } => {
-  const [ready, setReady] = useState(false);
   const ws = useWS();
   const api = useApi(groupId, sessionId);
 
