@@ -74,28 +74,6 @@ END;
 $BODY$;
 
 
--- FUNCTION: public.get_group_players(integer)
-
--- DROP FUNCTION IF EXISTS public.get_group_players(integer);
-
-CREATE OR REPLACE FUNCTION public.get_group_players(
-	groupid integer)
-    RETURNS TABLE(id uuid, name character varying) 
-    LANGUAGE 'plpgsql'
-    COST 100
-    STABLE PARALLEL UNSAFE
-    ROWS 1000
-
-AS $BODY$
-BEGIN
-    RETURN QUERY
-	SELECT p.id, p.name
-	FROM weeklyscore.player p;
-END;
-$BODY$;
-
-ALTER FUNCTION public.get_group_players(integer)
-    OWNER TO myuser;
 
 -- FUNCTION: public.get_session_buyins(uuid)
 
@@ -128,4 +106,26 @@ ALTER FUNCTION public.get_session_buyins(uuid)
     OWNER TO myuser;
 
 
+-- FUNCTION: public.get_group_players(integer)
+
+-- DROP FUNCTION IF EXISTS public.get_group_players(integer);
+
+CREATE OR REPLACE FUNCTION public.get_group_players(
+	groupid uuid)
+    RETURNS TABLE(id uuid, name character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    STABLE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+    RETURN QUERY
+	SELECT p.id, p.name
+	FROM weeklyscore.player p;
+END;
+$BODY$;
+
+ALTER FUNCTION public.get_group_players(integer)
+    OWNER TO myuser;
 
