@@ -5,6 +5,9 @@ export class SessionManager {
   private sessions: Map<string, Session> = new Map();
 
   addSession(clientId: string, session: Session) {
+    if (this.sessions.has(clientId)) {
+      this.removeSession(clientId);
+    }
     this.sessions.set(clientId, session);
   }
 
