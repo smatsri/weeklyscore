@@ -1,17 +1,17 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppConsumerService } from './app-consumer.service';
+import { CommandService } from './command';
 @Module({
   imports: [
     ClientsModule.register([
       { name: 'APP_CONSUMER', transport: Transport.TCP },
     ]),
   ],
-  controllers: [],
-  providers: [AppConsumerService],
+  providers: [AppConsumerService, CommandService],
 })
 export class AppConsumerModule implements OnModuleInit {
-  constructor(private readonly appConsumerService: AppConsumerService) {}
+  constructor(private readonly appConsumerService: AppConsumerService) { }
   onModuleInit() {
     this.appConsumerService.start();
   }

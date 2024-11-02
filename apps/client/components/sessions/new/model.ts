@@ -1,10 +1,4 @@
-import {
-  BuyinAdded,
-  Command,
-  Event,
-  PlayerAdded,
-  SessionCreated,
-} from "@weeklyscore/schema";
+import { BuyinAdded, Command, Event, PlayerAdded } from "@weeklyscore/schema";
 import { useCallback, useEffect, useState } from "react";
 
 export type Player = {

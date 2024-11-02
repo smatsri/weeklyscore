@@ -1,33 +1,47 @@
-import { Controller, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
+import { CommandService } from './command';
+import { parseMessage } from './validattion';
+import { isNone } from './validattion/option';
 
 @Injectable()
 export class AppConsumerService {
-  async start() {
-    console.log('App consumer started');
-    const redis = new Redis('redis://localhost:6379');
-    const subscriber = redis.duplicate();
-    redis.on('connect', () => {
+  private readonly redis: Redis;
+  private readonly subscriber: Redis;
+
+  constructor(private readonly commandService: CommandService) {
+    this.redis = new Redis('redis://localhost:6379');
+    this.subscriber = this.redis.duplicate();
+
+    this.redis.on('connect', () => {
       console.log('Connected to Redis');
     });
-    redis.on('error', (error) => {
+
+    this.redis.on('error', (error) => {
       console.error('Redis connection error:', error);
     });
+  }
 
-    await subscriber.psubscribe('command.*');
+  async start() {
+    console.log('App consumer started');
+    await this.subscriber.psubscribe('command.*');
+    this.subscriber.on('pmessage', async (pattern, channel, message) =>
+      this.onMessage(pattern, channel, message),
+    );
+  }
 
-    subscriber.on('pmessage', (pattern, channel, message) => {
-      const [, sessionId] = channel.split('.');
-      console.log(
-        `Received message from pattern ${pattern} on channel ${channel}: ${message}`,
-      );
+  private async onMessage(pattern: string, channel: string, message: string) {
+    const cmd = parseMessage(channel, message);
 
-      const response = JSON.stringify({
-        success: true,
-        data: 'not implemented',
-      });
+    if (isNone(cmd)) {
+      return;
+    }
 
-      redis.publish(`event.${sessionId}`, response);
-    });
+    const { sessionId, command } = cmd.value;
+    const evt = await this.commandService.handle(command);
+
+    const response = JSON.stringify(evt);
+
+    this.redis.publish(`event.${sessionId}`, response);
   }
 }

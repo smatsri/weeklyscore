@@ -19,7 +19,7 @@ export class Session {
       if (!valRes.success) {
         console.error('Invalid message received: ', valRes.error.message);
       } else {
-        this.redisService.publish(`command.${this.userId}`, message);
+        this.redisService.publish(`command.${this.userId}`, valRes.data);
       }
     });
 
