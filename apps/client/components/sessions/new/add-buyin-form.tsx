@@ -20,7 +20,6 @@ type Props = {
 const AddBuyinForm = ({ players, onSubmit }: Props) => {
   const [selectedUser, setSelectedUser] = useState("");
   const [amount, setAmount] = useState(0);
-
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSubmit(selectedUser, amount);

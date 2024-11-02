@@ -1,3 +1,10 @@
+import {
+  BuyinAdded,
+  Command,
+  Event,
+  PlayerAdded,
+  SessionCreated,
+} from "@weeklyscore/schema";
 import { useCallback, useEffect, useState } from "react";
 
 export type Player = {
@@ -12,29 +19,69 @@ export type Buyin = {
   player: Player;
 };
 
-type Success<T> = {
-  success: true;
-  data: T;
+export type ApiResponse = {
+  success: boolean;
 };
-
-type Failure = {
-  success: false;
-  error?: string;
-};
-
-type ApiResponse<T> = Success<T> | Failure;
 
 export type Api = {
-  addBuyin: (amount: number, playerId: string) => Promise<ApiResponse<Buyin>>;
-  addPlayer: (name: string) => Promise<ApiResponse<Player>>;
+  publish: (cmd: Command) => Promise<ApiResponse>;
   getPlayers: () => Promise<Player[]>;
   getBuyins: () => Promise<Buyin[]>;
+  subscribe: (callback: (event: Event) => void) => () => void;
 };
 
 export const useNewSession = (api: Api) => {
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
   const [buyins, setBuyins] = useState<Buyin[]>([]);
+
+  const handleSessionCreated = useCallback((event: SessionCreated) => {
+    setSessionId(event.payload.sessionId);
+  }, []);
+
+  const handlePlayerAdded = useCallback((event: PlayerAdded) => {
+    const player: Player = {
+      id: event.payload.playerId,
+      name: event.payload.name,
+    };
+    setPlayers((players) => [...players, player]);
+  }, []);
+
+  const handleBuyinAdded = useCallback(
+    (event: BuyinAdded) => {
+      const player = players.find(
+        (player) => player.id === event.payload.playerId
+      );
+
+      if (!player) {
+        throw new Error("Player not found");
+      }
+
+      const buyin: Buyin = {
+        id: event.payload.buyinId,
+        date: new Date(),
+        amount: event.payload.amount,
+        player,
+      };
+      setBuyins((buyins) => [...buyins, buyin]);
+    },
+    [players]
+  );
+
+  const onEvent = useCallback(
+    (event: Event) => {
+      switch (event.type) {
+        case "player-added":
+          return handlePlayerAdded(event);
+        case "buyin-added":
+          return handleBuyinAdded(event);
+        case "session-created":
+          return handleSessionCreated(event);
+      }
+    },
+    [players]
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -45,38 +92,55 @@ export const useNewSession = (api: Api) => {
         setLoading(false);
       }
     );
+
+    const unsubscribe = api.subscribe(onEvent);
+    return () => {
+      unsubscribe();
+    };
+  }, [api]);
+
+  const createSession = useCallback(async () => {
+    const cmd: Command = {
+      type: "create-session",
+      payload: {
+        groupId: "1",
+      },
+    };
+    const res = await api.publish(cmd);
+    return res.success;
   }, [api]);
 
   const addBuyin = useCallback(
     async (playerId: string, amount: number) => {
-      const res = await api.addBuyin(amount, playerId);
-      if (res.success) {
-        setBuyins([...buyins, res.data]);
-      }
-
+      const cmd: Command = {
+        type: "add-buyin",
+        payload: { sessionId: sessionId!, playerId, amount },
+      };
+      const res = await api.publish(cmd);
       return res.success;
     },
-    [api, buyins]
+    [api, buyins, players]
   );
 
   const addPlayer = useCallback(
     async (name: string) => {
-      const res = await api.addPlayer(name);
-      if (res.success) {
-        const newPlayers = [...players, res.data];
-        setPlayers(newPlayers);
-      }
+      const cmd: Command = {
+        type: "add-player",
+        payload: { name },
+      };
+      const res = await api.publish(cmd);
       return res.success;
     },
     [api, players]
   );
 
   return {
+    loading,
     players,
     buyins,
     addBuyin,
     addPlayer,
-    loading,
+    createSession,
   };
 };
 

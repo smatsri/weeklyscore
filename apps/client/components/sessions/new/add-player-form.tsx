@@ -14,7 +14,6 @@ export default function AddPlayerForm({ onSubmit }: Props) {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("טופס נשלח:", { playerName });
     onSubmit(playerName);
   };
 

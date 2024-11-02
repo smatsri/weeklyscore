@@ -14,7 +14,7 @@ export const AddBuyin = ({
       const success = await addBuyin(playerId, amount);
       if (success) setDialogOpen(false);
     },
-    [addBuyin]
+    [addBuyin, players]
   );
   return (
     <Dialog
