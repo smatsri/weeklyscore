@@ -6,7 +6,7 @@ export class AppConsumerService {
   async start() {
     console.log('App consumer started');
     const redis = new Redis('redis://localhost:6379');
-    const subscriber = new Redis('redis://localhost:6379');
+    const subscriber = redis.duplicate();
     redis.on('connect', () => {
       console.log('Connected to Redis');
     });
