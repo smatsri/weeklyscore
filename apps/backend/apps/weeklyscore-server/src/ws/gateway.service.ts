@@ -9,6 +9,7 @@ import { Session } from './session.class';
 import { RedisService } from './redis.service';
 import { FirebaseAuthService } from '@app/authentication';
 import { Redis } from 'ioredis';
+import { SessionManager } from './session.manager';
 
 @WebSocketGateway({
   cors: {
@@ -16,6 +17,8 @@ import { Redis } from 'ioredis';
   },
 })
 export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
+  sessionManager: SessionManager = new SessionManager();
+
   @WebSocketServer()
   server: Server;
   redis: Redis;
@@ -25,25 +28,19 @@ export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
     this.redis = new Redis('redis://localhost:6379');
   }
 
-  private sessions: Map<string, Session> = new Map();
-
   async handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
     const userId = await this.extractUserId(client);
     if (userId) {
       const redis = new RedisService(this.redis);
       const session = new Session(userId, client, redis);
-      this.sessions.set(client.id, session);
+      this.sessionManager.addSession(client.id, session);
     }
   }
 
   async handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
-    const session = this.sessions.get(client.id);
-    if (session) {
-      await session.cleanup();
-      this.sessions.delete(client.id);
-    }
+    this.sessionManager.removeSession(client.id);
   }
 
   private async extractUserId(client: Socket) {
