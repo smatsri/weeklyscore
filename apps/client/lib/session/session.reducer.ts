@@ -1,5 +1,5 @@
 import { Event } from "@weeklyscore/schema";
-import { Buyin, Player } from "../types";
+import { Buyin, Player } from "./types";
 
 type State = {
   loading: boolean;
