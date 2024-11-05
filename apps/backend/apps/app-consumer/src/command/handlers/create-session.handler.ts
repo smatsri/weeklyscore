@@ -7,9 +7,9 @@ import { CommandHandler } from './types';
 export class CreateSessionHandler implements CommandHandler<CreateSession> {
   constructor(private readonly sessions: SessionRepository) {}
 
-  async execute(command: CreateSession) {
+  async execute({ groupId }: CreateSession['payload']) {
     const newSession = await this.sessions.createSession({
-      playingGroupId: command.payload.groupId,
+      playingGroupId: groupId,
     });
 
     return Event.SessionCreated({

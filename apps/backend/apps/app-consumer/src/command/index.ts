@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Command, Event } from '@weeklyscore/schema';
-import { CommandHandler } from './handlers';
+import { Handler } from './handlers';
 
 const Success = (event: Event) => ({
   success: true,
@@ -14,7 +14,7 @@ const Error = (error: Error) => ({
 
 @Injectable()
 export class CommandService {
-  constructor(private readonly handler: CommandHandler) {}
+  constructor(private readonly handler: Handler) {}
 
   async handle(command: Command) {
     try {

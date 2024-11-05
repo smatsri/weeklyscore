@@ -7,9 +7,9 @@ import { CommandHandler } from './types';
 export class AddPlayerHandler implements CommandHandler<AddPlayer> {
   constructor(private readonly players: PlayerRepository) {}
 
-  async execute(command: AddPlayer) {
+  async execute({ name }: AddPlayer['payload']) {
     const newPlayer = await this.players.createPlayer({
-      name: command.payload.name,
+      name,
     });
 
     return Event.PlayerAdded({

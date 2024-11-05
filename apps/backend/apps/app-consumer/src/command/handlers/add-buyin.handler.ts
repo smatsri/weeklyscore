@@ -7,11 +7,11 @@ import { CommandHandler } from './types';
 export class AddBuyinHandler implements CommandHandler<AddBuyin> {
   constructor(private readonly buyins: BuyinRepository) {}
 
-  async execute(command: AddBuyin) {
+  async execute({ amount, playerId, sessionId }: AddBuyin['payload']) {
     const newBuyin = await this.buyins.createBuyin({
-      amount: command.payload.amount,
-      playerId: command.payload.playerId,
-      playSessionId: command.payload.sessionId,
+      amount,
+      playerId,
+      playSessionId: sessionId,
     });
 
     return Event.BuyinAdded({
