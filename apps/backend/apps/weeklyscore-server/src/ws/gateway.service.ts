@@ -5,11 +5,11 @@ import {
   OnGatewayInit,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Session } from './session.class';
-import { RedisService } from './redis.service';
+import { Session } from './services/session.class';
+import { RedisService } from './services/redis.service';
 import { FirebaseAuthService } from '@app/authentication';
 import { Redis } from 'ioredis';
-import { SessionManager } from './session.manager';
+import { SessionManager } from './services/session.manager';
 
 @WebSocketGateway({
   cors: {
@@ -24,7 +24,7 @@ export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
   redis: Redis;
   constructor(private readonly auth: FirebaseAuthService) {}
 
-  afterInit(server: any) {
+  afterInit() {
     this.redis = new Redis('redis://localhost:6379');
   }
 
