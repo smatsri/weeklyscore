@@ -12,9 +12,4 @@ import { DataModule } from '@app/data';
   ],
   providers: [AppConsumerService, CommandService],
 })
-export class AppConsumerModule implements OnModuleInit {
-  constructor(private readonly appConsumerService: AppConsumerService) {}
-  onModuleInit() {
-    this.appConsumerService.start();
-  }
-}
+export class AppConsumerModule {}
