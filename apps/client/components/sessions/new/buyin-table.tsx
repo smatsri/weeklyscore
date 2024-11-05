@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Buyin } from "./model";
+import { Buyin } from "@/lib/session";
 
 type Props = {
   buyins: Buyin[];

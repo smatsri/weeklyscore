@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NewSession, Player } from "./model";
+import { Player } from "@/lib/session";
 
 type Props = {
   players: Player[];
