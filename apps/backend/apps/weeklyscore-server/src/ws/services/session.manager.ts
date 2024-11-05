@@ -1,6 +1,6 @@
 import { Session } from './session.class';
 
-export class SessionManager {
+export class Sessions {
   private sessions: Map<string, Session> = new Map();
 
   addSession(clientId: string, session: Session) {

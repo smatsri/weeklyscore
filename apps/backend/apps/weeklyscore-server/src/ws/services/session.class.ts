@@ -8,10 +8,9 @@ export class Session {
     private readonly redisService: RedisService,
   ) {
     console.log(`Session created for user: ${userId}`);
-    this.initSubscription();
   }
 
-  private async initSubscription() {
+  public async init() {
     this.socket.on('message', (message) => {
       console.log(`Received message from user: ${this.userId}`);
       const data = JSON.parse(message);

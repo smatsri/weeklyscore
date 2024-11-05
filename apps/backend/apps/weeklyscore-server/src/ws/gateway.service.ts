@@ -9,7 +9,7 @@ import { Session } from './services/session.class';
 import { RedisService } from './services/redis.service';
 import { FirebaseAuthService } from '@app/authentication';
 import { Redis } from 'ioredis';
-import { SessionManager } from './services/session.manager';
+import { Sessions } from './services/session.manager';
 
 @WebSocketGateway({
   cors: {
@@ -17,7 +17,7 @@ import { SessionManager } from './services/session.manager';
   },
 })
 export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
-  sessionManager: SessionManager = new SessionManager();
+  sessionManager: Sessions = new Sessions();
 
   @WebSocketServer()
   server: Server;
@@ -34,6 +34,7 @@ export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
     if (userId) {
       const redis = new RedisService(this.redis);
       const session = new Session(userId, client, redis);
+      await session.init();
       this.sessionManager.addSession(client.id, session);
     }
   }
