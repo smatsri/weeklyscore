@@ -4,12 +4,13 @@ import {
   OnGatewayDisconnect,
   OnGatewayInit,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
-import { Session } from './services/session.class';
-import { RedisService } from './services/redis.service';
-import { FirebaseAuthService } from '@app/authentication';
 import { Redis } from 'ioredis';
-import { Sessions } from './services/session.manager';
+import { Server, Socket } from 'socket.io';
+import { FirebaseAuthService } from '@app/authentication';
+
+import { RedisService } from './services/redis.service';
+import { Session } from './services/session.class';
+import { Sessions } from './services/sessions.class';
 
 @WebSocketGateway({
   cors: {
@@ -32,16 +33,20 @@ export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
     console.log(`Client connected: ${client.id}`);
     const userId = await this.extractUserId(client);
     if (userId) {
-      const redis = new RedisService(this.redis);
-      const session = new Session(userId, client, redis);
-      await session.init();
-      this.sessionManager.addSession(client.id, session);
+      await this.createSession(client, userId);
     }
   }
 
   async handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
     this.sessionManager.removeSession(client.id);
+  }
+
+  private async createSession(client: Socket, userId: string) {
+    const redis = new RedisService(this.redis);
+    const session = new Session(userId, client, redis);
+    await session.init();
+    this.sessionManager.addSession(client.id, session);
   }
 
   private async extractUserId(client: Socket) {
