@@ -1,5 +1,5 @@
 import { CommandSchema, Command } from '@weeklyscore/schema';
-import { option, toValue, map, none, some, Option } from './option';
+import { option, none, some, Option } from './option';
 
 const parseSessionId = (pattern: string): Option<string> => {
   const [, sessionId] = pattern.split('.');
