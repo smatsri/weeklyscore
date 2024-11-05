@@ -1,14 +1,23 @@
+import {
+  BuyinRepository,
+  PlayerRepository,
+  SessionRepository,
+} from '@app/data/repositories';
 import { Injectable } from '@nestjs/common';
 import {
   Command,
   CreateSession,
-  Event,
   AddBuyin,
   AddPlayer,
 } from '@weeklyscore/schema';
 
 @Injectable()
 export class CommandService {
+  constructor(
+    private readonly players: PlayerRepository,
+    private readonly buyins: BuyinRepository,
+    private readonly sessions: SessionRepository,
+  ) {}
   async handle(command: Command) {
     console.log(`Received command: ${command}`);
 
@@ -22,37 +31,52 @@ export class CommandService {
     }
   }
 
-  private createSession(command: CreateSession): Event {
+  private async createSession(command: CreateSession) {
     console.log('Creating session');
+    const newSession = await this.sessions.createSession({
+      playingGroupId: command.payload.groupId,
+    });
     return {
       type: 'session-created',
       payload: {
-        sessionId: '123',
-        groupId: command.payload.groupId,
+        sessionId: newSession.id,
+        groupId: newSession.playingGroupId,
       },
     };
   }
 
-  private addPlayer(command: AddPlayer): Event {
+  private async addPlayer(command: AddPlayer) {
     console.log('Adding player');
+
+    const newPlayer = await this.players.createPlayer({
+      name: command.payload.name,
+    });
+
     return {
       type: 'player-added',
       payload: {
-        playerId: '123',
-        name: command.payload.name,
+        playerId: newPlayer.id,
+        name: newPlayer.name,
       },
     };
   }
 
-  private addBuyin(command: AddBuyin): Event {
+  private async addBuyin(command: AddBuyin) {
     console.log('Adding buyin');
+
+    const newBuyin = await this.buyins.createBuyin({
+      amount: command.payload.amount,
+      playerId: command.payload.playerId,
+      playSessionId: command.payload.sessionId,
+    });
+
     return {
       type: 'buyin-added',
       payload: {
-        amount: command.payload.amount,
-        playerId: command.payload.playerId,
-        buyinId: '123',
-        sessionId: command.payload.sessionId,
+        buyinId: newBuyin.id,
+        amount: newBuyin.amount,
+        playerId: newBuyin.playerId,
+        sessionId: newBuyin.playSessionId,
       },
     };
   }

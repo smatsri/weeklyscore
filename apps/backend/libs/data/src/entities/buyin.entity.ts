@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   Index,
+  JoinColumn,
 } from 'typeorm';
 import { Player } from './player.entity';
 import { PlaySession } from './playSession.entity';
@@ -20,12 +21,20 @@ export class Buyin implements entities.Buyin {
   amount: number;
 
   @ManyToOne(() => Player, (player) => player.buyins)
+  @JoinColumn({ name: 'playerId' })
   @Index('idx_buyin_player_id')
   player: Player;
 
+  @Column()
+  playerId: string;
+
   @ManyToOne(() => PlaySession, (playSession) => playSession.buyins)
+  @JoinColumn({ name: 'playSessionId' })
   @Index('idx_buyin_play_session_id')
   playSession: PlaySession;
+
+  @Column()
+  playSessionId: string;
 
   @CreateDateColumn()
   createdAt: Date;
