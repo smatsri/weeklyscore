@@ -70,3 +70,24 @@ export type SessionCreated = z.infer<typeof SessionCreatedSchema>;
 export type PlayerAdded = z.infer<typeof PlayerAddedSchema>;
 export type BuyinAdded = z.infer<typeof BuyinAddedSchema>;
 export type Event = z.infer<typeof EventSchema>;
+
+export const Event = {
+  SessionCreated: (payload: SessionCreated["payload"]): SessionCreated => ({
+    type: "session-created",
+    payload,
+  }),
+  PlayerAdded: (payload: PlayerAdded["payload"]): PlayerAdded => ({
+    type: "player-added",
+    payload,
+  }),
+  BuyinAdded: (payload: BuyinAdded["payload"]): BuyinAdded => ({
+    type: "buyin-added",
+    payload,
+  }),
+};
+// export const SessionCreated = (
+//   payload: SessionCreated["payload"]
+// ): SessionCreated => ({
+//   type: "session-created",
+//   payload,
+// });

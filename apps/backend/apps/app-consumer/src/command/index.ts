@@ -7,9 +7,12 @@ import { Injectable } from '@nestjs/common';
 import {
   Command,
   CreateSession,
+  Event,
   AddBuyin,
   AddPlayer,
 } from '@weeklyscore/schema';
+
+const { BuyinAdded, PlayerAdded, SessionCreated } = Event;
 
 @Injectable()
 export class CommandService {
@@ -18,6 +21,7 @@ export class CommandService {
     private readonly buyins: BuyinRepository,
     private readonly sessions: SessionRepository,
   ) {}
+
   async handle(command: Command) {
     console.log(`Received command: ${command}`);
 
@@ -36,13 +40,11 @@ export class CommandService {
     const newSession = await this.sessions.createSession({
       playingGroupId: command.payload.groupId,
     });
-    return {
-      type: 'session-created',
-      payload: {
-        sessionId: newSession.id,
-        groupId: newSession.playingGroupId,
-      },
-    };
+
+    return SessionCreated({
+      sessionId: newSession.id,
+      groupId: newSession.playingGroupId,
+    });
   }
 
   private async addPlayer(command: AddPlayer) {
@@ -52,13 +54,10 @@ export class CommandService {
       name: command.payload.name,
     });
 
-    return {
-      type: 'player-added',
-      payload: {
-        playerId: newPlayer.id,
-        name: newPlayer.name,
-      },
-    };
+    return PlayerAdded({
+      playerId: newPlayer.id,
+      name: newPlayer.name,
+    });
   }
 
   private async addBuyin(command: AddBuyin) {
@@ -70,14 +69,11 @@ export class CommandService {
       playSessionId: command.payload.sessionId,
     });
 
-    return {
-      type: 'buyin-added',
-      payload: {
-        buyinId: newBuyin.id,
-        amount: newBuyin.amount,
-        playerId: newBuyin.playerId,
-        sessionId: newBuyin.playSessionId,
-      },
-    };
+    return BuyinAdded({
+      buyinId: newBuyin.id,
+      amount: newBuyin.amount,
+      playerId: newBuyin.playerId,
+      sessionId: newBuyin.playSessionId,
+    });
   }
 }
