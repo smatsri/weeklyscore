@@ -21,7 +21,7 @@ export abstract class RedisConsumerBase
   }
 
   public async start() {
-    console.log('App consumer started');
+    console.log('Redis consumer started');
 
     this.redis.on('connect', () => {
       console.log('Connected to Redis');

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CommandService } from './command';
 import { parseMessage } from './validattion';
-import { isNone } from './validattion/option';
 import { isSuccess } from './utils/result';
 import { RedisConsumerBase } from './consumer-base.class';
+import { isNone } from './utils/option';
 
 @Injectable()
 export class AppConsumerService extends RedisConsumerBase {
