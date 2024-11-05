@@ -34,14 +34,18 @@ export class AppConsumerService {
     const cmd = parseMessage(channel, message);
 
     if (isNone(cmd)) {
+      console.error('Invalid message:', message);
       return;
     }
 
     const { sessionId, command } = cmd.value;
-    const evt = await this.commandService.handle(command);
+    const res = await this.commandService.handle(command);
 
-    const response = JSON.stringify(evt);
-
-    this.redis.publish(`event.${sessionId}`, response);
+    if (res.success) {
+      const response = JSON.stringify(res.event);
+      this.redis.publish(`event.${sessionId}`, response);
+    } else {
+      console.error('Command failed');
+    }
   }
 }
