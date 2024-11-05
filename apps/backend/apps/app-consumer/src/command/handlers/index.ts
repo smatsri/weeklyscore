@@ -11,14 +11,18 @@ export class Handler {
   constructor(private readonly moduleRef: ModuleRef) {}
 
   async execute(command: Command) {
-    const handler = this.moduleRef.get(Handlers[command.type], {
-      strict: false,
-    }) as CommandHandler<any>;
+    const handler = this.moduleRef.get<CommandHandler<typeof command>>(
+      Handlers[command.type],
+      {
+        strict: false,
+      },
+    );
 
     if (!handler) {
-      throw new Error('Handler not found');
+      throw new Error(`Handler not found for command type: ${command.type}`);
     }
-    return await handler.execute(command);
+
+    return await handler.execute(command.payload);
   }
 }
 
