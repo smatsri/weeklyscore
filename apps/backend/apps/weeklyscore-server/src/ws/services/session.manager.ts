@@ -1,4 +1,3 @@
-// session.manager.ts
 import { Session } from './session.class';
 
 export class SessionManager {
