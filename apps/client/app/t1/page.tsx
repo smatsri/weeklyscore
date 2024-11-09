@@ -1,8 +1,9 @@
 "use client";
 import { useFirebaseContext } from "@/components/Firebase/FirebaseProvider";
-import { CreateSession } from "@weeklyscore/schema";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
+
+import {} from "@weeklyscore/schema/graphql";
 
 let socket: Socket;
 
