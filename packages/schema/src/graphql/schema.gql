@@ -1,0 +1,38 @@
+type Mutation {
+  createSession(input: CreateSessionInput!): Session
+  addPlayer(input: AddPlayerInput!): Player
+  addBuyin(input: AddBuyinInput!): Buyin
+}
+
+type Player {
+  id: ID!
+  name: String!
+}
+
+type Session {
+  id: ID!
+  groupId: String!
+}
+
+type Buyin {
+  id: ID!
+  sessionId: String!
+  playerId: String!
+  amount: Float!
+}
+
+input CreateSessionInput {
+  groupId: String!
+}
+
+input AddPlayerInput {
+  name: String!
+}
+
+input AddBuyinInput {
+  sessionId: String!
+  playerId: String!
+  amount: Float!
+}
+
+union CommandInput = CreateSessionInput | AddPlayerInput | AddBuyinInput
