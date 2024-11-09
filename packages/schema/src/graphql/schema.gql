@@ -34,5 +34,3 @@ input AddBuyinInput {
   playerId: String!
   amount: Float!
 }
-
-union CommandInput = CreateSessionInput | AddPlayerInput | AddBuyinInput
