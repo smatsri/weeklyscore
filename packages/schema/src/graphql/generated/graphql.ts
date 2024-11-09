@@ -72,7 +72,8 @@ export type Session = {
   id: Scalars['ID']['output'];
 };
 
-
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -142,7 +143,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
   AddBuyinInput: AddBuyinInput;
   AddPlayerInput: AddPlayerInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -154,10 +155,10 @@ export type ResolversTypes = {
   Player: ResolverTypeWrapper<Player>;
   Session: ResolverTypeWrapper<Session>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-};
+}>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
   AddBuyinInput: AddBuyinInput;
   AddPlayerInput: AddPlayerInput;
   Boolean: Scalars['Boolean']['output'];
@@ -169,38 +170,38 @@ export type ResolversParentTypes = {
   Player: Player;
   Session: Session;
   String: Scalars['String']['output'];
-};
+}>;
 
-export type BuyinResolvers<ContextType = any, ParentType extends ResolversParentTypes['Buyin'] = ResolversParentTypes['Buyin']> = {
+export type BuyinResolvers<ContextType = any, ParentType extends ResolversParentTypes['Buyin'] = ResolversParentTypes['Buyin']> = ResolversObject<{
   amount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   playerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   sessionId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addBuyin?: Resolver<Maybe<ResolversTypes['Buyin']>, ParentType, ContextType, RequireFields<MutationAddBuyinArgs, 'input'>>;
   addPlayer?: Resolver<Maybe<ResolversTypes['Player']>, ParentType, ContextType, RequireFields<MutationAddPlayerArgs, 'input'>>;
   createSession?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationCreateSessionArgs, 'input'>>;
-};
+}>;
 
-export type PlayerResolvers<ContextType = any, ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player']> = {
+export type PlayerResolvers<ContextType = any, ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type SessionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = {
+export type SessionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = ResolversObject<{
   groupId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = any> = ResolversObject<{
   Buyin?: BuyinResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Player?: PlayerResolvers<ContextType>;
   Session?: SessionResolvers<ContextType>;
-};
+}>;
 

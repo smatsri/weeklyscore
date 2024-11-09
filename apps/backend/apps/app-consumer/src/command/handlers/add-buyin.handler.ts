@@ -1,6 +1,6 @@
 import { BuyinRepository } from '@app/data/repositories';
 import { Injectable } from '@nestjs/common';
-import { AddBuyin, Event } from '@weeklyscore/schema';
+import { AddBuyin, Event } from '@weeklyscore/schema/messages';
 import { CommandHandler } from './types';
 
 @Injectable()
