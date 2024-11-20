@@ -1,7 +1,8 @@
 import { SessionRepository } from '@app/data/repositories';
 import { Injectable } from '@nestjs/common';
-import { CreateSession, Event } from '@weeklyscore/schema';
+import { Event } from '@weeklyscore/schema';
 import { CommandHandler } from './types';
+import { CreateSession } from '@weeklyscore/schema/messages';
 
 @Injectable()
 export class CreateSessionHandler implements CommandHandler<CreateSession> {
