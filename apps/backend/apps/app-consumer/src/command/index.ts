@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Command, Event } from '@weeklyscore/schema';
-import { Handler } from './handlers';
+import { Handler } from './handlers/handler';
 import { Result, Success, Fail } from '../utils/result';
 
 @Injectable()

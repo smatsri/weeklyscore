@@ -15,7 +15,12 @@ import {
   imports: [
     TypeOrmModule.forFeature([Player, Buyin, PlaySession, PlayingGroup]),
   ],
-  providers: [DataService],
+  providers: [
+    DataService,
+    BuyinRepository,
+    PlayerRepository,
+    SessionRepository,
+  ],
   exports: [
     TypeOrmModule,
     DataService,

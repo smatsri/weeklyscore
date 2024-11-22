@@ -4,18 +4,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./messages": {
-      "import": "./dist/messages/index.js",
-      "types": "./dist/messages/index.d.ts"
-    },
-    "./graphql": {
-      "import": "./dist/graphql/index.js",
-      "types": "./dist/graphql/index.d.ts"
-    }
+    ".": "./dist/index.js",
+    "./messages": "./dist/messages/index.js",
+    "./graphql": "./dist/graphql/index.js"
   },
   "scripts": {
     "build": "tsc",

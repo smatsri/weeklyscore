@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "turbo dev && yarn dev-server",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start-local-env": "node ./docker/index.js"
+    "start-local-env": "node ./docker/index.js",
+    "build-schema": "cd packages/schema && yarn build",
+    "dev-server": "cd apps/backend && yarn dev",
+    "dev-consumer": "cd apps/consumer && yarn dev"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
