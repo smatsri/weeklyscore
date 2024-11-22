@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 
+console.log('Starting weeklyscore-server2');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.connectMicroservice({

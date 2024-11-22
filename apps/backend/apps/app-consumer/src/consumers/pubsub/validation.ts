@@ -1,5 +1,5 @@
-import { CommandSchema, Command } from '@weeklyscore/schema/messages';
-import { option, none, some, Option } from '../utils/option';
+import { CommandSchema, Command } from '@weeklyscore/schema';
+import { option, none, some, Option } from '../../utils/option';
 
 const parseSessionId = (pattern: string): Option<string> => {
   const [, sessionId] = pattern.split('.');

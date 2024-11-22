@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io';
 import { RedisService } from './redis.service';
-import { CommandSchema } from '@weeklyscore/schema/messages';
+import { CommandSchema } from '@weeklyscore/schema';
 export class Session {
   constructor(
     private readonly userId: string,

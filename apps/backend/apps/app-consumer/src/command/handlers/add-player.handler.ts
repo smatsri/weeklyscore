@@ -2,7 +2,7 @@ import { PlayerRepository } from '@app/data/repositories';
 import { Injectable } from '@nestjs/common';
 import { Event } from '@weeklyscore/schema';
 import { CommandHandler } from './types';
-import { AddPlayer } from '@weeklyscore/schema/messages';
+import { AddPlayer } from '@weeklyscore/schema';
 
 @Injectable()
 export class AddPlayerHandler implements CommandHandler<AddPlayer> {

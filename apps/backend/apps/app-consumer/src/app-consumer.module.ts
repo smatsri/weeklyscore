@@ -1,8 +1,8 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AppConsumerService } from './app-consumer.service';
 import { CommandService } from './command';
 import { DataModule } from '@app/data';
+import { AppConsumerService } from './consumers';
 @Module({
   imports: [
     ClientsModule.register([

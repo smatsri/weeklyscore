@@ -20,7 +20,7 @@ export class FirebaseAuthService implements OnModuleInit {
     });
   }
 
-  async verifyToken(token: string) {
+  async verifyToken(token: string): Promise<admin.auth.DecodedIdToken> {
     return admin.auth().verifyIdToken(token);
   }
 }
