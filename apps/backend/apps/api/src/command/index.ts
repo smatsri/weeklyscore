@@ -5,7 +5,7 @@ import { Result, Success, Fail } from '../utils/result';
 
 @Injectable()
 export class CommandService {
-  constructor(private readonly handler: Handler) {}
+  constructor(private readonly handler: Handler) { }
 
   async handle(command: Command): Promise<Result<Event>> {
     try {
