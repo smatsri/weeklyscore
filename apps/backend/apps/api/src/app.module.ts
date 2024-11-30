@@ -3,10 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthenticationModule } from '@app/authentication';
 
-import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { PostgraphileModule } from '@app/postgraphile';
-import { WsModule } from './ws';
+import { RoutesModule } from './routes/routes.module';
 
 @Module({
   imports: [
@@ -14,24 +12,27 @@ import { WsModule } from './ws';
       isGlobal: true,
     }),
     AuthenticationModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      migrations: ['src/migrations/*.ts'],
-      //entities: [join(__dirname, 'libs/data/src/entities/*.entity{.ts,.js}')],
-      namingStrategy: new SnakeNamingStrategy(),
-      autoLoadEntities: true,
-      synchronize: false,
-    }),
-    DataModule,
-    PostgraphileModule,
-    WsModule,
+    createTypeOrmModule(),
+    RoutesModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
+
+
+function createTypeOrmModule() {
+  return TypeOrmModule.forRoot({
+    type: 'postgres',
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    migrations: ['src/migrations/*.ts'],
+    namingStrategy: new SnakeNamingStrategy(),
+    autoLoadEntities: true,
+    synchronize: false,
+  });
+}
+
