@@ -53,13 +53,13 @@
         "tsConfigPath": "apps/api/tsconfig.app.json"
       }
     },
-    "app-consumer": {
+    "consumer": {
       "type": "application",
-      "root": "apps/app-consumer",
+      "root": "apps/consumer",
       "entryFile": "main",
-      "sourceRoot": "apps/app-consumer/src",
+      "sourceRoot": "apps/consumer/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/app-consumer/tsconfig.app.json"
+        "tsConfigPath": "apps/consumer/tsconfig.app.json"
       }
     }
   },
