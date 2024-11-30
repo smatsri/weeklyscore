@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Command, Event } from '@weeklyscore/schema';
 import { Handler } from './handlers/handler';
-import { Result, Success, Fail } from '../utils/result';
+import { Fail, Result, Success } from '../../utils/result';
 
 @Injectable()
 export class CommandService {
