@@ -1,11 +1,11 @@
 import { Socket } from 'socket.io';
-import { RedisService } from './redis.service';
+import { RedisPubSub } from '../../redis/pubsub.service';
 import { CommandSchema } from '@weeklyscore/schema';
 export class Session {
   constructor(
     private readonly userId: string,
     private readonly socket: Socket,
-    private readonly redisService: RedisService,
+    private readonly redisService: RedisPubSub,
   ) {
     console.log(`Session created for user: ${userId}`);
   }
@@ -31,7 +31,7 @@ export class Session {
   async cleanup() {
     console.log(`Cleaning up session for user: ${this.userId}`);
     try {
-      await this.redisService.unsubscribe(`events.${this.userId}`);
+      await this.redisService.unsubscribe(`event.${this.userId}`);
       this.socket.disconnect();
     } catch (error) {
       console.error(error);

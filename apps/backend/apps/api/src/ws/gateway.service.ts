@@ -8,7 +8,7 @@ import { Redis } from 'ioredis';
 import { Server, Socket } from 'socket.io';
 import { FirebaseAuthService } from '@app/authentication';
 
-import { RedisService } from './services/redis.service';
+import { RedisPubSub } from '../redis/pubsub.service';
 import { Session } from './services/session.class';
 import { Sessions } from './services/sessions.class';
 
@@ -23,7 +23,7 @@ export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
   @WebSocketServer()
   server: Server;
   redis: Redis;
-  constructor(private readonly auth: FirebaseAuthService) {}
+  constructor(private readonly auth: FirebaseAuthService) { }
 
   afterInit() {
     this.redis = new Redis('redis://localhost:6379');
@@ -43,7 +43,7 @@ export class WSGateway implements OnGatewayDisconnect, OnGatewayInit {
   }
 
   private async createSession(client: Socket, userId: string) {
-    const redis = new RedisService(this.redis);
+    const redis = new RedisPubSub(this.redis);
     const session = new Session(userId, client, redis);
     await session.init();
     this.sessionManager.addSession(client.id, session);

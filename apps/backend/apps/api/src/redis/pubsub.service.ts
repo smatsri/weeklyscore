@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis';
 
-export class RedisService {
+export class RedisPubSub {
   private readonly subscriberClient: Redis;
 
   constructor(private readonly client: Redis) {
