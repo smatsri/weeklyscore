@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CommandService } from './command';
 import { DataModule } from '@app/data';
-import { AppConsumerService } from './consumers';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { HandlersModule } from './command/handlers/handlers.module';
@@ -30,6 +29,6 @@ import { ConfigModule } from '@nestjs/config';
     }),
     HandlersModule,
   ],
-  providers: [AppConsumerService, CommandService],
+  providers: [CommandService],
 })
-export class AppConsumerModule {}
+export class AppConsumerModule { }

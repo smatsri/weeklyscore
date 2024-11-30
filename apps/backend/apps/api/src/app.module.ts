@@ -6,7 +6,6 @@ import { AuthenticationModule } from '@app/authentication';
 import { DataModule } from '@app/data';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgraphileModule } from '@app/postgraphile';
-import { WsModule } from './ws';
 
 @Module({
   imports: [
@@ -29,9 +28,8 @@ import { WsModule } from './ws';
     }),
     DataModule,
     PostgraphileModule,
-    WsModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
